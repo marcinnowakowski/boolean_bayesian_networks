@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "boolean-bayesian-networks"
+version = "0.1.0"
+description = "A utility to create truth tables for asynchronous boolean network transitions using NetworkX"
+authors = ["Marcin Nowakowski <your.email@example.com>"]
+readme = "README.md"
+packages = [{include = "boolean_networks"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+networkx = "^3.0"
+pandas = "^2.0"
+matplotlib = "^3.7"
+numpy = "^1.24"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+black = "^23.0"
+isort = "^5.12"
+flake8 = "^6.0"
+mypy = "^1.0"
+jupyter = "^1.0"
+
+[tool.poetry.scripts]
+analyze-networks = "boolean_networks.cli:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
