@@ -58,6 +58,3 @@ dmypy.json
 Thumbs.db
 
 # Project specific
-output/
-*.csv
-*.xlsx
