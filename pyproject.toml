@@ -7,11 +7,13 @@ readme = "README.md"
 packages = [{include = "boolean_networks"}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.12"
 networkx = "^3.0"
 pandas = "^2.0"
 matplotlib = "^3.7"
 numpy = "^1.24"
+jupyter = "^1.1.1"
+ipykernel = "^7.1.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.0"
@@ -37,6 +39,6 @@ profile = "black"
 multi_line_output = 3
 
 [tool.mypy]
-python_version = "3.9"
+python_version = "3.12"
 warn_return_any = true
 warn_unused_configs = true

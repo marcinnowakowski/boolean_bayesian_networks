@@ -203,6 +203,14 @@ make format    # Run black + isort
 make check     # Run all checks
 ```
 
+## Setting up docker and running BNFinder
+
+1. Install and set up docker - https://docs.docker.com/get-docker/
+2. Build docker image: `docker build -t bnfinder .`  this will create a docker image named `bnfinder`. this comand doesn't need to be repeated every time
+3. In order to run docker container: `docker run --rm -v "$(pwd):/data" bnfinder bnf -e "/data/output/bnfinder_input/$filename" -n "/data/output/results/${name_no_ext}.sif" -g -v` this will run the BNFinder container and process the input file. the `--rm` flag will remove the container after it's done running. the `-v` flag will mount the current directory to the `/data` directory inside the container. this is so that the container can access the input file and write the output file to the current directory. the `-e` flag will specify the input file, and the `-n` flag will specify the output file. the `-g` flag will allow self-loops, and the `-v` flag will enable verbose mode.
+4. Or use `run_bnfinder_analysis.sh` script to run BNFinder on all files in `output/bnfinder_input/` directory.
+
+
 ## License
 
 MIT License
