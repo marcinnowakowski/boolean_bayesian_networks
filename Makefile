@@ -27,6 +27,18 @@ clean: ## Clean up generated files
 visualize: ## Visualize a network (specify FILE=path)
 	poetry run python -m boolean_networks.cli visualize $(FILE)
 
+analyze_results: ## Analyze BNFinder results (specify ID=experiment_id)
+	poetry run python analysis/analyze_bnf_results.py $(ID)
+
+visualize_results: ## Visualize analysis results (specify ID=experiment_id)
+	poetry run python analysis/visualize_results.py $(ID)
+
+analyze_file: ## Analyze a single BIF file (specify FILE=path/to/file.bif)
+	poetry run python analysis/analyze_single.py $(FILE)
+
+visualize_file: ## Visualize a single BIF file (specify FILE=path/to/file.bif)
+	poetry run python analysis/visualize_single.py $(FILE)
+
 functions_to_truth_table: ## Generate truth table from functions (specify FILE=path, OUT=output)
 	poetry run python -m boolean_networks.cli functions-to-truth-table $(FILE) $(if $(OUT),-o $(OUT),)
 
