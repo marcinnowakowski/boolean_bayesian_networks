@@ -36,7 +36,13 @@ make generate_network SEED=42 OUT=networks/transitions/my_network.py
 ### Generate a Network with 3-Variable Dependency Limit
 
 ```bash
-make generate_3dep SEED=35 OUT=networks/functions/my_3dep_network.py
+# Default 7 variables
+make generate_3dep SEED=35 OUT=networks/functions/7d_3dep/my_network.py
+
+# Custom number of variables (10, 13, or 16)
+make generate_3dep VARS=10 SEED=101 OUT=networks/functions/10d_3dep/my_network.py
+make generate_3dep VARS=13 SEED=42 OUT=networks/functions/13d_3dep/my_network.py
+make generate_3dep VARS=16 SEED=314 OUT=networks/functions/16d_3dep/my_network.py
 ```
 
 ### Convert Transitions to Boolean Functions (Full Pipeline)
@@ -80,7 +86,8 @@ poetry run python -m boolean_networks.cli generate-network \
 
 # Generate network with 3-dependency limit
 poetry run python -m boolean_networks.cli generate-3dep \
-    -s 35 \                    # Random seed
+    -n 10 \                    # Number of variables (default: 7)
+    -s 101 \                   # Random seed
     -o output.py \             # Output file
     --min-ones 2 \             # Min true outputs per function
     --max-ones 6               # Max true outputs per function
@@ -93,7 +100,7 @@ make help                  # Show all available commands
 make install               # Install dependencies
 make test                  # Run tests
 make generate_network      # Generate 7D network (SEED=, OUT=)
-make generate_3dep         # Generate 7D network with 3-var limit (SEED=, OUT=)
+make generate_3dep         # Generate network with 3-var limit (VARS=, SEED=, OUT=)
 make transitions_to_truth_table  # Convert transitions → truth table (FILE=, OUT=)
 make functions_to_truth_table    # Convert functions → truth table (FILE=, OUT=)
 make truth_table_to_sops         # Extract SOPs from truth table (FILE=, OUT=)
@@ -153,7 +160,10 @@ networks/
 ├── truth_tables/                   # Generated truth tables
 ├── sops/                           # Extracted SOP functions
 └── functions/                      # Simplified/generated functions
-    └── 7d_3dep/                    # Networks with 3-dependency limit
+    ├── 7d_3dep/                    # 7-variable networks (3-dep limit)
+    ├── 10d_3dep/                   # 10-variable networks (3-dep limit)
+    ├── 13d_3dep/                   # 13-variable networks (3-dep limit)
+    └── 16d_3dep/                   # 16-variable networks (3-dep limit)
 ```
 
 ## Generators
@@ -172,14 +182,30 @@ make generate_network SEED=42 OUT=output.py
 
 ### 3-Dependency Generator (`generator_with_3_deps_limit`)
 
-Creates networks where each variable's update function depends on exactly 3 variables. This guarantees simpler Boolean expressions.
+Creates networks where each variable's update function depends on exactly 3 variables. This guarantees simpler Boolean expressions. Supports arbitrary number of variables.
 
 ```bash
+# 7-variable network (default)
 make generate_3dep SEED=35 OUT=output.py
-# Output: Functions like "x1": "(~x2 & x3 & ~x5) | (x2 & x3 & x5)"
+
+# 10-variable network (1,024 states)
+make generate_3dep VARS=10 SEED=101 OUT=networks/functions/10d_3dep/bn_10d.py
+
+# 13-variable network (8,192 states)
+make generate_3dep VARS=13 SEED=42 OUT=networks/functions/13d_3dep/bn_13d.py
+
+# 16-variable network (65,536 states)
+make generate_3dep VARS=16 SEED=314 OUT=networks/functions/16d_3dep/bn_16d.py
 ```
 
-Good seeds with multiple attractors: 3, 26, 35, 40, 43
+**Pre-generated networks:**
+
+| Dimension | States | Seeds | Directory |
+|-----------|--------|-------|----------|
+| 7D | 128 | 3, 26, 35, 40, 43 | `networks/functions/7d_3dep/` |
+| 10D | 1,024 | 101, 202, 303, 404, 505 | `networks/functions/10d_3dep/` |
+| 13D | 8,192 | 42, 137, 256, 999, 2025 | `networks/functions/13d_3dep/` |
+| 16D | 65,536 | 314, 777, 1234, 4321, 8888 | `networks/functions/16d_3dep/` |
 
 ## Example: Full Pipeline
 

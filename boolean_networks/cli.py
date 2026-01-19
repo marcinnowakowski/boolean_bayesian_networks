@@ -197,9 +197,10 @@ def main():
     gen_parser.add_argument('--parentless', type=int, default=8, help='Number of parentless states')
     
     # Generate network with 3-variable limit
-    gen3_parser = subparsers.add_parser('generate-3dep', help='Generate 7D network with 3-variable dependency limit')
+    gen3_parser = subparsers.add_parser('generate-3dep', help='Generate network with 3-variable dependency limit')
     gen3_parser.add_argument('-o', '--output', help='Output file (default: stdout)')
     gen3_parser.add_argument('-s', '--seed', type=int, help='Random seed')
+    gen3_parser.add_argument('-n', '--num-vars', type=int, default=7, help='Number of variables (default: 7)')
     gen3_parser.add_argument('--min-ones', type=int, default=2, help='Min true outputs per function')
     gen3_parser.add_argument('--max-ones', type=int, default=6, help='Max true outputs per function')
     
@@ -354,6 +355,7 @@ def main():
             from .generator_with_3_deps_limit.generator import network_to_string
             
             config = NetworkConfig(
+                num_vars=args.num_vars,
                 seed=args.seed,
                 min_true_outputs=args.min_ones,
                 max_true_outputs=args.max_ones,
@@ -362,7 +364,7 @@ def main():
             transitions, functions = generate_network(config)
             analysis = analyze_network(transitions)
             
-            print(f"Generated network (3-dep limit):")
+            print(f"Generated network ({args.num_vars}D, 3-dep limit):")
             print(f"  States: {analysis['num_states']}")
             print(f"  Fixed points: {analysis['fixed_points']}")
             print(f"  Attractors: {analysis['num_attractors']} (sizes: {analysis['attractor_sizes']})")
@@ -373,7 +375,7 @@ def main():
                 dep_names = [f"x{d + 1}" for d in deps]
                 print(f"    {var_name} <- {', '.join(dep_names)}")
             
-            output = network_to_string(transitions, functions, f"generated_7d_3dep_seed_{args.seed or 'random'}")
+            output = network_to_string(transitions, functions, f"generated_{args.num_vars}d_3dep_seed_{args.seed or 'random'}")
             
             if args.output:
                 import os

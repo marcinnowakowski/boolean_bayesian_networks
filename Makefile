@@ -54,8 +54,8 @@ simplify_sops: ## Simplify SOP expressions (specify FILE=path, OUT=output)
 generate_network: ## Generate 7D network (specify OUT=output, SEED=seed)
 	poetry run python -m boolean_networks.cli generate-network $(if $(OUT),-o $(OUT),) $(if $(SEED),-s $(SEED),)
 
-generate_3dep: ## Generate 7D network with 3-var limit (specify OUT=output, SEED=seed)
-	poetry run python -m boolean_networks.cli generate-3dep $(if $(OUT),-o $(OUT),) $(if $(SEED),-s $(SEED),)
+generate_3dep: ## Generate network with 3-var limit (specify OUT=output, SEED=seed, VARS=num_variables)
+	poetry run python -m boolean_networks.cli generate-3dep $(if $(VARS),-n $(VARS),) $(if $(OUT),-o $(OUT),) $(if $(SEED),-s $(SEED),)
 
 docs: ## Generate documentation (placeholder)
 	@echo "Documentation generation not implemented yet"

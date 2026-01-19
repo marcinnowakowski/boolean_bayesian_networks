@@ -145,9 +145,10 @@ def network_to_string(transitions: Dict[str, List[str]],
                       name: str = "generated_network") -> str:
     """Convert network to Python file format."""
     expressions = functions_to_expressions(functions)
+    num_vars = len(functions)
     
     lines = ['"""']
-    lines.append(f"7D Boolean Network: {name}")
+    lines.append(f"{num_vars}D Boolean Network: {name}")
     lines.append("")
     lines.append("Each variable depends on at most 3 variables.")
     lines.append("")
@@ -222,7 +223,7 @@ def analyze_network(transitions: Dict[str, List[str]]) -> Dict:
 
 
 def _find_sccs(transitions: Dict[str, List[str]]) -> List[Set[str]]:
-    """Find strongly connected components using Tarjan's algorithm."""
+    """Find strongly connected components using iterative Tarjan's algorithm."""
     index_counter = [0]
     stack = []
     lowlinks = {}
@@ -230,33 +231,62 @@ def _find_sccs(transitions: Dict[str, List[str]]) -> List[Set[str]]:
     on_stack = {}
     sccs = []
     
-    def strongconnect(node):
-        index[node] = index_counter[0]
-        lowlinks[node] = index_counter[0]
-        index_counter[0] += 1
-        stack.append(node)
-        on_stack[node] = True
+    # Iterative version using explicit call stack
+    for start_node in transitions:
+        if start_node in index:
+            continue
+            
+        # Call stack: (node, iterator over successors, phase)
+        # phase 0 = first visit, phase 1 = after recursion
+        call_stack = [(start_node, None, 0)]
         
-        for successor in transitions.get(node, []):
-            if successor not in index:
-                strongconnect(successor)
-                lowlinks[node] = min(lowlinks[node], lowlinks[successor])
-            elif on_stack.get(successor, False):
-                lowlinks[node] = min(lowlinks[node], index[successor])
-        
-        if lowlinks[node] == index[node]:
-            scc = set()
-            while True:
-                successor = stack.pop()
-                on_stack[successor] = False
-                scc.add(successor)
-                if successor == node:
-                    break
-            sccs.append(scc)
-    
-    for node in transitions:
-        if node not in index:
-            strongconnect(node)
+        while call_stack:
+            node, successor_iter, phase = call_stack.pop()
+            
+            if phase == 0:
+                # First visit to this node
+                index[node] = index_counter[0]
+                lowlinks[node] = index_counter[0]
+                index_counter[0] += 1
+                stack.append(node)
+                on_stack[node] = True
+                
+                # Create iterator for successors
+                successor_iter = iter(transitions.get(node, []))
+                call_stack.append((node, successor_iter, 1))
+                
+            else:
+                # Returning from processing successors
+                # Try to get next successor
+                try:
+                    successor = next(successor_iter)
+                    # Put current node back on stack to continue later
+                    call_stack.append((node, successor_iter, 1))
+                    
+                    if successor not in index:
+                        # Recurse on successor
+                        call_stack.append((successor, None, 0))
+                    elif on_stack.get(successor, False):
+                        lowlinks[node] = min(lowlinks[node], index[successor])
+                        
+                except StopIteration:
+                    # Done with all successors
+                    # Check if this is a root of an SCC
+                    if lowlinks[node] == index[node]:
+                        scc = set()
+                        while True:
+                            successor = stack.pop()
+                            on_stack[successor] = False
+                            scc.add(successor)
+                            if successor == node:
+                                break
+                        sccs.append(scc)
+                    
+                    # Update parent's lowlink if we have a parent
+                    if call_stack:
+                        parent_node = call_stack[-1][0]
+                        if parent_node in lowlinks:
+                            lowlinks[parent_node] = min(lowlinks[parent_node], lowlinks[node])
     
     return sccs
 
@@ -266,6 +296,7 @@ def main():
     
     output_file = None
     seed = None
+    num_vars = 7
     
     if '-o' in sys.argv:
         idx = sys.argv.index('-o')
@@ -277,11 +308,16 @@ def main():
         if idx + 1 < len(sys.argv):
             seed = int(sys.argv[idx + 1])
     
-    config = NetworkConfig(seed=seed)
+    if '-n' in sys.argv:
+        idx = sys.argv.index('-n')
+        if idx + 1 < len(sys.argv):
+            num_vars = int(sys.argv[idx + 1])
+    
+    config = NetworkConfig(num_vars=num_vars, seed=seed)
     transitions, functions = generate_network(config)
     
     analysis = analyze_network(transitions)
-    print(f"Generated network (3-var limit):")
+    print(f"Generated network ({num_vars}D, 3-var limit):")
     print(f"  States: {analysis['num_states']}")
     print(f"  Parentless: {analysis['parentless_states']}")
     print(f"  Fixed points: {analysis['fixed_points']}")
@@ -293,7 +329,7 @@ def main():
         dep_names = [f"x{d + 1}" for d in deps]
         print(f"  {var_name} <- {', '.join(dep_names)}")
     
-    output = network_to_string(transitions, functions, f"generated_7d_3dep_seed_{seed or 'random'}")
+    output = network_to_string(transitions, functions, f"generated_{num_vars}d_3dep_seed_{seed or 'random'}")
     
     if output_file:
         import os
