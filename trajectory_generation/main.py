@@ -1,5 +1,4 @@
 import os
-import pprint
 import itertools
 
 import a01_compile_bool_nets as a01
@@ -32,7 +31,7 @@ async_attr = a03.find_attractors(async_sts)
 #pprint.pprint(async_attr)
 
 #a04. Generacja trajektorii
-os.makedirs(f"{config.TRAJECTORIES_DIR}/{net_name}",exist_ok=True)
+os.makedirs(f"{config.TRAJECTORIES_DIR}/{net_name}", exist_ok=True)
 execution_modes = [
     ('sync', sync_sts, sync_attr),
     ('async', async_sts, async_attr)
