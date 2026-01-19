@@ -3,7 +3,6 @@ import glob
 import sys
 import argparse
 import pandas as pd
-from typing import Dict, Set, Tuple, List
 
 # Add parent directory to path to import boolean_networks
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
@@ -15,8 +14,6 @@ from analysis.bif_parser import (
     reconstruct_boolean_function,
 )
 from analysis.utils import (
-    reconstruct_functions_from_transitions,
-    extract_dependencies,
     calculate_metrics,
     evaluate_dynamics,
     parse_experiment_id,
@@ -36,8 +33,8 @@ def main():
     num_vars, seed = parse_experiment_id(experiment_id)
 
     root_dir = os.path.dirname(os.path.dirname(__file__))
-    results_dir = os.path.join(root_dir, f"output/results/{experiment_id}")
-    output_csv = os.path.join(root_dir, f"output/analysis_report_{experiment_id}.csv")
+    results_dir = os.path.join(root_dir, f"trajectory_generation/results/{experiment_id}")
+    output_csv = os.path.join(root_dir, f"analysis/analysis_report_{experiment_id}.csv")
 
     if not os.path.exists(results_dir):
         print(f"Error: Results directory not found at {results_dir}")
@@ -130,17 +127,57 @@ def main():
 
     if not df.empty:
         print("\n=== Analysis Summary ===")
-
+        print("best results for different sizes and lengths:")
         cols_to_summarize = [
             "Precision",
             "Recall",
             "F1",
-            "Bitwise_Accuracy",
             "Transition_Accuracy",
-            "Correct_Functions",
         ]
-        summary = df.groupby(["score", "size", "len", "mode"])[cols_to_summarize].max()
-        print(summary)
+        best_summary = df.groupby(["score", "size", "len", "mode"])[cols_to_summarize].max()
+        print(best_summary)
+
+        cols_to_summarize = [
+            "score",
+            "freq",
+            "attr_ratio",
+            "size",
+            "len",
+            "mode",
+            "Precision",
+            "Recall",
+            "F1",
+            "Transition_Accuracy",
+        ]
+
+        print("\n=== Top 10 Networks (best F1) ===")
+        large_networks = df.nlargest(10, "F1")
+        print(large_networks[cols_to_summarize])
+
+        print("\n=== Top 10 Networks (best Transition Accuracy) ===")
+        large_networks = df.nlargest(10, "Transition_Accuracy")
+        print(large_networks[cols_to_summarize])
+
+        #now print best netowrk for each freq
+        for freq in df["freq"].unique():
+            best_f1 = df[df["freq"] == freq].nlargest(1, "F1")
+            best_ta = df[df["freq"] == freq].nlargest(1, "Transition_Accuracy")
+            print(f"\n=== Best Networks for freq={freq} ===")
+            print(pd.concat([best_f1, best_ta])[cols_to_summarize])
+
+        for attr_ratio in df["attr_ratio"].unique():
+            best_f1 = df[df["attr_ratio"] == attr_ratio].nlargest(1, "F1")
+            best_ta = df[df["attr_ratio"] == attr_ratio].nlargest(1, "Transition_Accuracy")
+            print(f"\n=== Best Networks for attr_ratio={attr_ratio} ===")
+            print(pd.concat([best_f1, best_ta])[cols_to_summarize])
+        
+        for mode in df["mode"].unique():
+            best_f1 = df[df["mode"] == mode].nlargest(1, "F1")
+            best_ta = df[df["mode"] == mode].nlargest(1, "Transition_Accuracy")
+            print(f"\n=== Best Networks for mode={mode} ===")
+            print(pd.concat([best_f1, best_ta])[cols_to_summarize])
+
+        
 
 
 if __name__ == "__main__":
