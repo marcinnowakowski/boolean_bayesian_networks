@@ -13,7 +13,7 @@ from analysis.plotting import plot_structure_comparison, plot_stg_comparison
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Visualize BNFinder results for a specific experiment."
+        description="Visualize BNFinder results_20_01 for a specific experiment."
     )
     parser.add_argument("experiment_id", help="Experiment ID (e.g., 7d_000)")
     args = parser.parse_args()
@@ -22,7 +22,7 @@ def main():
     num_vars, seed = parse_experiment_id(experiment_id)
 
     root_dir = os.path.dirname(os.path.dirname(__file__))
-    results_dir = os.path.join(root_dir, f"output/results/{experiment_id}")
+    results_dir = os.path.join(root_dir, f"output/results_20_01/{experiment_id}")
     plots_dir = os.path.join(results_dir, "plots")
     csv_path = os.path.join(root_dir, f"output/analysis_report_{experiment_id}.csv")
 

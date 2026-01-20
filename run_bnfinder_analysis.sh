@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Create output directory for SIF results
-mkdir -p output/results
+# Create output directory for SIF results_20_01
+mkdir -p output/results_20_01
 
 echo "Starting BNFinder analysis on files in output/bnfinder_input/..."
 

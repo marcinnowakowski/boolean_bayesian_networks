@@ -12,7 +12,7 @@ from .function_exctactor.network_loader import load_network_from_file
 
 
 def analyze_single_network(filepath: str, output_dir: str = ".", export_format: str = "csv"):
-    """Analyze a single network and export results."""
+    """Analyze a single network and export results_20_01."""
     try:
         print(f"Analyzing network: {filepath}")
         
@@ -27,7 +27,7 @@ def analyze_single_network(filepath: str, output_dir: str = ".", export_format: 
         truth_table = bn.generate_truth_table()
         print(f"\nGenerated truth table with {len(truth_table)} rows")
         
-        # Export results
+        # Export results_20_01
         filename = Path(filepath).stem
         output_path = Path(output_dir) / f"{filename}_truth_table.{export_format}"
         bn.export_truth_table(str(output_path), export_format)

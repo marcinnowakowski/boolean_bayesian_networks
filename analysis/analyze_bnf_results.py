@@ -24,7 +24,7 @@ from analysis.utils import (
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Analyze BNFinder results for a specific experiment."
+        description="Analyze BNFinder results_20_01 for a specific experiment."
     )
     parser.add_argument("experiment_id", help="Experiment ID (e.g., 7d_000)")
     args = parser.parse_args()
@@ -33,7 +33,7 @@ def main():
     num_vars, seed = parse_experiment_id(experiment_id)
 
     root_dir = os.path.dirname(os.path.dirname(__file__))
-    results_dir = os.path.join(root_dir, f"trajectory_generation/results/{experiment_id}")
+    results_dir = os.path.join(root_dir, f"trajectory_generation/results_20_01/{experiment_id}")
     output_csv = os.path.join(root_dir, f"analysis/analysis_report_{experiment_id}.csv")
 
     if not os.path.exists(results_dir):
@@ -127,7 +127,7 @@ def main():
 
     if not df.empty:
         print("\n=== Analysis Summary ===")
-        print("best results for different sizes and lengths:")
+        print("best results_20_01 for different sizes and lengths:")
         cols_to_summarize = [
             "Precision",
             "Recall",

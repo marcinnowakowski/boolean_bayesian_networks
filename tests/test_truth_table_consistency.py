@@ -10,7 +10,7 @@ class TestTruthTableFunctionsConsistency:
     
     def test_truth_table_matches_functions(self):
         """
-        Verify that evaluating functions produces the same results as truth table.
+        Verify that evaluating functions produces the same results_20_01 as truth table.
         
         For each state in the truth table, evaluate each function and check
         that the result matches what's in the truth table.
@@ -58,7 +58,7 @@ class TestTruthTableFunctionsConsistency:
     
     def test_roundtrip_functions_to_truth_table(self):
         """
-        Test that functions -> truth_table -> functions produces equivalent results.
+        Test that functions -> truth_table -> functions produces equivalent results_20_01.
         """
         from boolean_networks.truth_tables import load_functions, generate_truth_table, evaluate_expression
         

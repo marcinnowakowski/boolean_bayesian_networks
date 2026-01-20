@@ -1,4 +1,4 @@
-THREADS = 12
+THREADS = 10
 
 # trajectory parameters:
 TRAJECTORIES_DIR = "trajectories"
@@ -8,8 +8,8 @@ MODES = {
     'async' : True
 }
 SAMPLING_FREQS = [1, 5, 10]
-SIZES = [1, 10, 100, 500] # ile trajektorii
-LENGTHS = [10, 50, 100, 1000] # jaka dlugosc kazdej trajektorii
+SIZES = [1, 10, 100, 300] # ile trajektorii
+LENGTHS = [10, 50, 100, 500] # jaka dlugosc kazdej trajektorii
 ATTR_RATIO = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0] # czas w stanach atraktorów/ cala dlugosc trajektorii
 EPSILON = 0.05
 POOL_SIZE = 10_000
