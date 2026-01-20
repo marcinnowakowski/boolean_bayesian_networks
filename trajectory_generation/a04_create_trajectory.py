@@ -1,6 +1,34 @@
 import random
-import os
+import config
 
+"""    
+print(f"Rozpoczynam generowanie datasetów dla sieci: {net_name}...")
+for mode_name, sts, attr in execution_modes:
+    # Generujemy iloczyn kartezjański wszystkich hiperparametrów
+    param_combinations = itertools.product(
+        config.SAMPLING_FREQS,
+        config.SIZES,
+        config.LENGTHS,
+        config.ATTR_RATIO
+    )
+    for f, s, l, r in param_combinations:
+        # Formatka nazwy: {wymiar}_{id}_{mode}_f{freq}_s{size}_l{len}_at{ratio}.txt
+        filename = f"{net_name}_{mode_name}_f{f}_s{s}_l{l}_at{r}.txt"
+        current_savepath = os.path.join(config.TRAJECTORIES_DIR, net_name, filename)
+
+        # Wywołanie Twojej funkcji generującej
+        a04.create_trajectory_file(
+            transitions=sts,
+            attractors=attr,
+            nodes=net_nodes,
+            sampling_freq=f,
+            size=s,
+            length=l,
+            attr_ratio=r,
+            epsilon=config.EPSILON,
+            filename=current_savepath
+        )
+"""
 
 def create_trajectory_file(transitions, attractors, nodes, sampling_freq, size, length, attr_ratio, epsilon, filename):
     """
@@ -23,7 +51,7 @@ def create_trajectory_file(transitions, attractors, nodes, sampling_freq, size, 
     raw_length_needed = (length - 1) * sampling_freq + 1
 
     attempts = 0
-    while len(final_trajectories) < size and attempts < 10000:
+    while len(final_trajectories) < size and attempts < config.ATTR_ATTEMPTS:
         attempts += 1
         # Startujemy z losowego stanu
         current_state = random.choice(list(transitions.keys()))
@@ -57,12 +85,12 @@ def create_trajectory_file(transitions, attractors, nodes, sampling_freq, size, 
 
     if len(final_trajectories) < size:
         print(
-            f"Warning: Nie udało się wygenerować wszystkich {size} trajektorii. Znaleziono: {len(final_trajectories)}")
+            f"    - Dla {filename} nie osiągnięto size ({len(final_trajectories)} < {length}). Próba: {attempts}")
 
     # Zapis do formatu BNFinder2 (wykorzystujemy Twoją funkcję format_for_bnfinder)
     if final_trajectories:
         _format_to_bnf_file(final_trajectories, nodes, filename)
-        print(f"Dataset zapisany w: {filename} (Ratio ok. {attr_ratio})")
+        print(f"    + Udało się {filename}.")
 
 
 def _format_to_bnf_file(trajectories, nodes, filename):
