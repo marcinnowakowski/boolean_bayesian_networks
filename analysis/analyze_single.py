@@ -155,6 +155,9 @@ def main():
     print(f"True Attractors Count:    {attractor_metrics['Attractors_True_Count']}")
     print(f"Learned Attractors Count: {attractor_metrics['Attractors_Learned_Count']}")
     print(f"Correctly Recovered:      {attractor_metrics['Attractors_Correct']}")
+    print(f"Attractor Precision:      {attractor_metrics['Attractors_Precision']:.4f}")
+    print(f"Attractor Recall:         {attractor_metrics['Attractors_Recall']:.4f}")
+    print(f"Attractor F1:             {attractor_metrics['Attractors_F1']:.4f}")
 
 
 if __name__ == "__main__":

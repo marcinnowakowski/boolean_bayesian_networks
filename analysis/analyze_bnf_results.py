@@ -40,8 +40,12 @@ def main():
     num_vars, seed = parse_experiment_id(experiment_id)
 
     root_dir = os.path.dirname(os.path.dirname(__file__))
-    results_dir = os.path.join(root_dir, f"trajectory_generation/results_20_01/{experiment_id}")
-    output_csv = os.path.join(root_dir, f"analysis/reports/analysis_report_{experiment_id}.csv")
+    results_dir = os.path.join(
+        root_dir, f"trajectory_generation/results_20_01/{experiment_id}"
+    )
+    output_csv = os.path.join(
+        root_dir, f"analysis/reports/analysis_report_{experiment_id}.csv"
+    )
 
     if not os.path.exists(results_dir):
         print(f"Error: Results directory not found at {results_dir}")
@@ -229,6 +233,7 @@ def main():
             "F1",
             "Transition_Accuracy",
             "Attractors_Correct",
+            "Attractors_F1",
         ]
         best_summary = df.groupby(["score", "size", "len", "mode"])[
             cols_to_summarize
@@ -247,6 +252,7 @@ def main():
             "F1",
             "Transition_Accuracy",
             "Attractors_Correct",
+            "Attractors_F1",
         ]
 
         print("\n=== Top 10 Networks (best F1) ===")
@@ -258,28 +264,44 @@ def main():
         print(large_networks[cols_to_summarize])
 
         for freq in df["freq"].unique():
-            best_f1_sync = df[(df["freq"] == freq) & (df["mode"] == "sync")].nlargest(1, "F1")
+            best_f1_sync = df[(df["freq"] == freq) & (df["mode"] == "sync")].nlargest(
+                1, "F1"
+            )
             best_ta_sync = df[(df["freq"] == freq) & (df["mode"] == "sync")].nlargest(
                 1, "Transition_Accuracy"
             )
-            best_f1_async = df[(df["freq"] == freq) & (df["mode"] == "async")].nlargest(1, "F1")
+            best_f1_async = df[(df["freq"] == freq) & (df["mode"] == "async")].nlargest(
+                1, "F1"
+            )
             best_ta_async = df[(df["freq"] == freq) & (df["mode"] == "async")].nlargest(
                 1, "Transition_Accuracy"
             )
             print(f"\n=== Best Networks for freq={freq} ===")
-            print(pd.concat([best_f1_sync, best_ta_sync, best_f1_async, best_ta_async])[cols_to_summarize])
+            print(
+                pd.concat([best_f1_sync, best_ta_sync, best_f1_async, best_ta_async])[
+                    cols_to_summarize
+                ]
+            )
 
         for attr_ratio in df["attr_ratio"].unique():
-            best_f1_sync = df[(df["attr_ratio"] == attr_ratio) & (df["mode"] == "sync")].nlargest(1, "F1")
-            best_ta_sync = df[(df["attr_ratio"] == attr_ratio) & (df["mode"] == "sync")].nlargest(
-                1, "Transition_Accuracy"
-            )
-            best_f1_async = df[(df["attr_ratio"] == attr_ratio) & (df["mode"] == "async")].nlargest(1, "F1")
-            best_ta_async = df[(df["attr_ratio"] == attr_ratio) & (df["mode"] == "async")].nlargest(
-                1, "Transition_Accuracy"
-            )
+            best_f1_sync = df[
+                (df["attr_ratio"] == attr_ratio) & (df["mode"] == "sync")
+            ].nlargest(1, "F1")
+            best_ta_sync = df[
+                (df["attr_ratio"] == attr_ratio) & (df["mode"] == "sync")
+            ].nlargest(1, "Transition_Accuracy")
+            best_f1_async = df[
+                (df["attr_ratio"] == attr_ratio) & (df["mode"] == "async")
+            ].nlargest(1, "F1")
+            best_ta_async = df[
+                (df["attr_ratio"] == attr_ratio) & (df["mode"] == "async")
+            ].nlargest(1, "Transition_Accuracy")
             print(f"\n=== Best Networks for attr_ratio={attr_ratio} ===")
-            print(pd.concat([best_f1_sync, best_ta_sync, best_f1_async, best_ta_async])[cols_to_summarize])
+            print(
+                pd.concat([best_f1_sync, best_ta_sync, best_f1_async, best_ta_async])[
+                    cols_to_summarize
+                ]
+            )
 
 
 if __name__ == "__main__":

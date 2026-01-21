@@ -14,6 +14,7 @@ matplotlib = "^3.7"
 numpy = "^1.24"
 jupyter = "^1.1.1"
 ipykernel = "^7.1.0"
+seaborn = "^0.13.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.0"

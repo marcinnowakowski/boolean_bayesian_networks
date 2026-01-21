@@ -57,7 +57,7 @@ def main():
 
         if not df.empty:
             # We want to visualize best network for each mode and for each metric
-            metrics = ["F1", "Transition_Accuracy", "Attractors_Correct"]
+            metrics = ["F1", "Transition_Accuracy", "Attractors_F1"]
             modes = (
                 df["mode"].unique() if "mode" in df.columns else ["async"]
             )  # default fallback

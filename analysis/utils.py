@@ -147,7 +147,12 @@ def build_learned_stg(cpts, parents_map, num_vars=7):
     for i in range(2**num_vars):
         state = f"{i:0{num_vars}b}"
         next_state = predict_next_state_learned(state, cpts, parents_map, num_vars)
-        transitions[state] = [next_state]
+
+        # Filter self-loops to match Ground Truth behavior
+        if state != next_state:
+            transitions[state] = [next_state]
+        else:
+            transitions[state] = []
     return transitions
 
 
@@ -302,8 +307,23 @@ def calculate_attractor_recovery(
         if found:
             correct_count += 1
 
+    tp = correct_count
+    fp = len(learned_groups) - correct_count
+    fn = len(true_groups) - correct_count
+
+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0
+    recall = tp / (tp + fn) if (tp + fn) > 0 else 0
+    f1 = (
+        2 * (precision * recall) / (precision + recall)
+        if (precision + recall) > 0
+        else 0
+    )
+
     return {
         "Attractors_Correct": correct_count,
         "Attractors_True_Count": len(true_groups),
         "Attractors_Learned_Count": len(learned_groups),
+        "Attractors_Precision": precision,
+        "Attractors_Recall": recall,
+        "Attractors_F1": f1,
     }
