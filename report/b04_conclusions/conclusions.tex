@@ -1,0 +1,45 @@
+% Part II Conclusions
+
+The application of BNFinder2 to biological Boolean network models yielded results consistent with our synthetic network benchmarks, validating the practical utility of the reconstruction pipeline.
+
+\subsection{Reconstruction Performance on Biological Networks}
+
+The reconstruction quality observed on biological networks followed the dimensionality trends established in Part I:
+
+\begin{itemize}
+    \item \textbf{5D Caulobacter model:} The compact cell cycle network was reconstructed with high fidelity, correctly identifying the key regulatory dependencies between master regulators CtrA, GcrA, and DnaA. The single fixed-point attractor structure was preserved in the reconstructed network.
+    
+    \item \textbf{7D Phage lambda model:} The bistable lysis-lysogeny decision circuit presented moderate reconstruction challenges. The reconstructed network captured the competitive inhibition between CI and Cro, though some auxiliary regulatory connections showed reduced accuracy.
+    
+    \item \textbf{10D Embryonic development model:} Consistent with Part I findings, the 10-dimensional network exhibited degraded reconstruction quality. The large number of transient SCCs (704) and complex trajectory landscape contributed to increased reconstruction difficulty.
+\end{itemize}
+
+\subsection{Biological Interpretation}
+
+The reconstructed networks, while not perfectly matching the original models, still provide biologically meaningful insights:
+
+\begin{itemize}
+    \item \textbf{Preserved attractor structure:} The reconstructed networks generally maintain the correct number and approximate size of attractors, suggesting that the essential dynamical behavior (stable states, oscillations) can be inferred from trajectory data.
+    
+    \item \textbf{Core regulatory motifs:} Key regulatory relationships---such as feedback loops and mutual inhibitions---are often correctly identified, even when peripheral connections are missed.
+    
+    \item \textbf{Pathway predictions:} A biologist interpreting the reconstructed Caulobacter network would correctly infer that CtrA activity is regulated by GcrA and DnaA, and that CcrM methylation timing is coordinated with cell cycle progression.
+\end{itemize}
+
+\subsection{Practical Implications}
+
+For researchers applying BNFinder2 to reconstruct unknown biological networks:
+
+\begin{enumerate}
+    \item \textbf{Dimensionality limit:} Networks with more than 9 variables should be approached with caution; consider decomposing larger pathways into smaller regulatory modules.
+    
+    \item \textbf{Synchronous preference:} Where biologically appropriate, synchronous update semantics provide superior reconstruction quality.
+    
+    \item \textbf{Data requirements:} Moderate dataset sizes (50--100 trajectories) with trajectory lengths of 10--50 time points provide good reconstruction performance without excessive computational cost.
+    
+    \item \textbf{Attractor coverage:} Including trajectories that sample attractor states (40--80\% attractor ratio) improves reconstruction of the stable states that are often biologically most relevant.
+\end{enumerate}
+
+\subsection{Conclusion}
+
+BNFinder2 demonstrates practical utility for reconstructing small-to-medium sized biological Boolean networks from state transition data. While the sharp performance degradation at 10+ variables limits applicability to larger gene networks, the tool successfully reconstructs the core regulatory logic of compact biological circuits. The reconstructed models, though imperfect, preserve essential dynamical properties and can guide biological interpretation of regulatory pathway behavior.

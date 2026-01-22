@@ -1,0 +1,31 @@
+% Part II Introduction
+
+Part II of this study applies the BNFinder2 reconstruction pipeline, validated on synthetic networks in Part I, to real biological Boolean network models. The goal is to assess whether the insights and optimal parameter configurations discovered through synthetic benchmarking translate to practical reconstruction of biological regulatory networks.
+
+\subsection{Biological Boolean Network Models}
+
+Boolean networks have proven to be powerful abstractions for modeling gene regulatory networks, signaling pathways, and cell fate decision circuits. In these models, each variable represents the activity state (ON/OFF) of a gene, protein, or cellular process, and Boolean update functions capture the regulatory logic governing state transitions.
+
+The models selected for this validation study represent well-characterized biological systems:
+
+\begin{itemize}
+    \item \textbf{Bacterial cell cycle regulation:} The \textit{Caulobacter crescentus} cell cycle model captures the coordinated expression of master regulators (CtrA, GcrA, DnaA, CcrM, SciP) that orchestrate cell division and differentiation in this asymmetrically dividing bacterium.
+    
+    \item \textbf{Phage decision circuits:} The bacteriophage $\lambda$ lysis-lysogeny model represents one of the best-studied genetic switches in biology, where the CI and Cro proteins compete to determine whether the phage enters a dormant (lysogenic) or replicative (lytic) state.
+    
+    \item \textbf{Developmental gene networks:} The embryonic development model captures gene regulatory interactions that drive cell differentiation during early development, including the interplay of signaling molecules and transcription factors.
+\end{itemize}
+
+\subsection{Value of Biological Validation}
+
+Testing BNFinder2 on biological models serves several purposes:
+
+\begin{enumerate}
+    \item \textbf{Real-world applicability:} Biological networks often have irregular structures, asymmetric dependencies, and biologically-constrained update functions that may differ from randomly generated synthetic networks.
+    
+    \item \textbf{Dimensionality constraints:} Based on Part I results, we focus on networks with 5--10 variables, which corresponds to core regulatory modules in many biological pathways.
+    
+    \item \textbf{Interpretability:} Successful reconstruction of known biological models validates that the inferred regulatory relationships can be biologically meaningful, not just statistically accurate.
+\end{enumerate}
+
+The following sections detail the model selection process, reconstruction methodology, and results of applying BNFinder2 to these biological networks.
