@@ -1,0 +1,4 @@
+dimension,model_id,description,num_states,num_transitions,parentless_states,fixed_points,num_sccs,num_attractors,attractor_sizes,num_transient_sccs,transient_scc_sizes,scc_edges
+5,109,Caulobacter cell cycle,32,85,1,1,8,1,[1],7,"[25, 1, 1, 1, 1, 1, 1]",13
+7,158,Phage lambda decision,128,441,1,1,81,2,"[2, 1]",79,"[31, 11, 4, 2, 2, 2, 1, 1, 1, 1]",294
+10,63,Embryonic development,1024,5121,1,1,705,1,[1],704,"[221, 100, 1, 1, 1, 1, 1, 1, 1, 1]",3723
