@@ -38,9 +38,10 @@ Synchronous   & 1 & 50  & 50 & 0.9 \\ \hline
 
 \subsection{10D model parameters (bn\_063\_10d\_011)}
 
-As 10D networks represented the "borderline-high" complexity threshold in Part I, the dataset size and trajectory lengths were reduced to $10$ to maintain computational feasibility while focusing on high-quality snapshots. In the synchronous mode, a significantly higher sampling frequency ($f=7$) was selected based on Part I results indicating that widely spaced samples help BNFinder2 distinguish between direct causal links and intermediate correlations in larger state spaces.
+As 10D networks represented the complexity threshold in Part I at which reconstruction almost failed , the dataset size and trajectory lengths were surprisingly reduced to 10.
+In the synchronous mode, a higher sampling frequency ($f=7$) was selected, contrary to previous models.
 
-\begin{table}[h!]
+\begin{table}[hbtp]
 \centering
 \begin{tabular}{lcccccc}
 \hline
@@ -53,9 +54,9 @@ Synchronous   & 7 & 10 & 10 & 0.9 \\ \hline
 
 \subsection{Parameter Rationale}
 
-The divergence in \texttt{ATTR\_RATIO} between models (e.g., $0.2$ for 10D Async vs. $1.0$ for 5D Sync) is a result of the optimal configurations identified in the first iteration of the project. Part I results clearly demonstrated that:
+The divergence in \texttt{ATTR\_RATIO} between models (e.g., $0.2$ for 10D sync vs. $1.0$ for 5D sync) is a result of the optimal configurations identified the 1-st part of the project, which demonstrated that:
 \begin{itemize}
     \item \textbf{Synchronous modes} perform best with very high attractor ratios, as the deterministic transitions provide clear evidence of the underlying logic when the system reaches steady states.
-    \item \textbf{Asynchronous modes} often require lower attractor ratios (more transient states) to provide the algorithm with enough "state-change" events to correctly infer the individual node update rules.
-    \item \textbf{High-dimensional models (10D)} exhibit better reconstruction when sampling frequency is increased, preventing the algorithm from being overwhelmed by the high density of transitions in the state transition system.
+    \item \textbf{Asynchronous modes} often require lower attractor ratios to provide the algorithm with enough state-change events to correctly infer the individual node update rules.
+    \item \textbf{High-dimensional models} exhibit better reconstruction when sampling frequency is increased, probably by preventing the algorithm from being overwhelmed by the high density of transitions in the state transition system.
 \end{itemize}

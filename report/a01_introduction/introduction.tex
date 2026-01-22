@@ -1,0 +1,19 @@
+
+
+The reconstruction of Gene Regulatory Networks from experimental time-series data is a fundamental problem of systems biology, allowing for a deeper understanding of cellular mechanisms. 
+Boolean Networks provide a robust framework for modeling these interactions, where the state of each molecular component is represented as a binary value.
+However, accurately inferring the underlying logic of these networks from limited and noisy data remains a significant challenge.
+
+This report focuses on benchmarking of \textbf{BNFinder2}, a specialized tool designed for the reconstruction of Dynamic Bayesian Networks and from such networks we will try to reconstruct refernce Boolean Network.
+The primary objective of Part I is to establish a performance baseline using synthetic Boolean networks.
+With a controlled synthetic environment, we can treat the generated networks as a benchmark  allowing for a quantitative evaluation of the algorithm's reconstruction accuracy that would be impossible with empirical data alone.
+
+Our benchmarking approach explores quite broad hyperparameter space including:
+\begin{itemize}
+    \item \textbf{Network-dependent properties:} Scaling the dimensionality from 5D to 16D.
+    \item \textbf{Trajectory-dependent properties:} Varying trajectory lengths, dataset sizes, and sampling frequencies to simulate different experimental conditions.
+    \item \textbf{Dynamics-dependent properties:} Explorint the impact of attractor ratios on the inference process, the balance between steady-state and transient information provided in the trajectories.
+\end{itemize}
+
+By finding the optimal parameter combinations, Part I provides the necessary guidelines for the biological validation part.
+The insights gained here guide the application of BNFinder2 to real biological models in Part II.

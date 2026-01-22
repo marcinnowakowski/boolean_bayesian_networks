@@ -4,9 +4,19 @@
 \usepackage{amsmath}
 \usepackage{subcaption}
 \usepackage{float}
+\usepackage{booktabs}
+\usepackage{multirow}
+\widowpenalty=10000
+\clubpenalty=10000
 
-\title{SAD project}
-\author{}
+\title{
+    \textbf{Evaluation of BNFinder2 in Boolean Network Reconstruction}
+}
+\author{
+  Marcin Nowakowski \and 
+  Maciej Sanocki \and 
+  Mateusz Wawrzyniak
+}
 \date{January 2026}
 
 \begin{document}
@@ -18,13 +28,14 @@
 \end{center}
 
 \section{Introduction}
+\input{a01_introduction/introduction}
 
-\section{experimental setup}
+\section{Methodology}
 
-\subsection{Network Generation}
+\subsection{Network generation}
 \input{a02_experimental_setup/sub_network_generation}
 
-\subsection{Dataset Generation}
+\subsection{Dataset generation}
 \input{a02_experimental_setup/sub_data_generation}
 
 \subsection{Network reconstruction and evaluation}
@@ -45,46 +56,299 @@
 \subsection{Generated datasets}
 \input{a03_results/sub_datasets_generated}
 
-\subsection{Reconstruction results}
-\todo{Maciej}
+\subsection{Reconstruction Results}
+
+\subsubsection{General Observations}
+The performance of BNFinder exceeded our initial expectations. We initially hypothesized that the tool might struggle with reconstructing Boolean functions where a variable appears in multiple regulatory contexts (e.g., configurations involving both a variable and its alternative).
+
+However, BNFinder demonstrated high robustness, predicting the outputs of highly complex Boolean functions with significant accuracy. This performance held true across both asynchronous and synchronous update settings. Examples of the resulting State Transition Graphs (STGs) are presented below:
+
+\begin{figure}[ht] % 'ht' helps place it near the text; use [p] for a dedicated page
+    \centering
+    
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{stg_async_best_F1_5d_000.png}
+    \end{subfigure}
+    \hfill % Adds even spacing between images
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{stg_sync_best_Transition_Accuracy_5d_000.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{structure_sync_best_Transition_Accuracy_5d_000.png}
+    \end{subfigure}
+    
+    \vspace{1cm}
+    
+        \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{6d}
+    \end{subfigure}
+    \hfill % Adds even spacing between images
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{stg_sync_best_Transition_Accuracy__000.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{structure_sync_best_Transition_Accuracy_5d_000.png}
+    \end{subfigure}
+    
+    \vspace{1cm}
+
+\begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{6d}
+    \end{subfigure}
+    \hfill % Adds even spacing between images
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{stg_sync_best_Transition_Accuracy__000.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{structure_sync_best_Transition_Accuracy_5d_000.png}
+    \end{subfigure}
+    
+    \vspace{1cm}
+
+
+        \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{stg_async_best_F1_5d_000.png}
+    \end{subfigure}
+    \hfill % Adds even spacing between images
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{stg_sync_best_Transition_Accuracy_5d_000.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{structure_sync_best_Transition_Accuracy_5d_000.png}
+    \end{subfigure}
+    
+    \vspace{1cm}
+    
+        \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{6d}
+    \end{subfigure}
+    \hfill % Adds even spacing between images
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{stg_sync_best_Transition_Accuracy__000.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{structure_sync_best_Transition_Accuracy_5d_000.png}
+    \end{subfigure}
+    
+    \vspace{1cm}
+
+
+        \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{stg_async_best_F1_5d_000.png}
+    \end{subfigure}
+    \hfill % Adds even spacing between images
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{stg_sync_best_Transition_Accuracy_5d_000.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{structure_sync_best_Transition_Accuracy_5d_000.png}
+    \end{subfigure}
+    
+    \vspace{1cm}
+    
+        \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{6d}
+    \end{subfigure}
+    \hfill % Adds even spacing between images
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{stg_sync_best_Transition_Accuracy__000.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{structure_sync_best_Transition_Accuracy_5d_000.png}
+    \end{subfigure}
+    
+    \vspace{1cm}
+
+
+    \vspace{0.5cm} % Vertical space before the caption
+    \caption{Poor results for both asynchronous and synchronous modes across different dimensions.}
+    \label{fig:performance_row}
+\end{figure}
+
+% [Insert STG figures here]
+
+\subsubsection{BDE vs. MDL Scoring Metrics}
+In our comparative evaluation of scoring functions, we found no substantial difference in performance between Bayesian Dirichlet equivalence (BDE) and Minimum Description Length (MDL). However, as MDL consistently yielded marginally superior results, it was selected as the primary metric for the remainder of this study.
+
+\subsubsection{Performance Degradation at High Dimensionality}
+We observed a notable and sudden decline in reconstruction performance when the network size reached 10 variables. it was rather unexpected as the performance for 9 variables was still very good. We tried to investigate wether the chocie of base boolean networks was the cause, however we observed the roughly the same results for different kinds of networks. %(number of attractors)
+
+\begin{figure}[!h] % 'p' places the figure on its own dedicated page
+    \centering
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{stg_async_best_Transition_Accuracy_10d_001.png}
+        \caption{5 variables}
+        \label{fig:var5}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{stg_sync_best_Transition_Accuracy_10d_001.png}
+        \caption{6 variables}
+        \label{fig:var6}
+    \end{subfigure}
+
+    \vspace{1cm} % Increased spacing for clarity between large images
+
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{stg_async_best_Transition_Accuracy_10d_002.png}
+        \caption{7 variables}
+        \label{fig:var7}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{stg_sync_best_Transition_Accuracy_10d_002.png}
+        \caption{8 variables}
+        \label{fig:var8}
+    \end{subfigure}
+
+    \caption{Poor results both for asynchronous and synchronous modes}
+    \label{fig:performance_full_page}
+\end{figure}
+
+
+\subsubsection{Influence of Hyperparameters on Performance}
+To analyze how different parameters affect reconstruction quality, we filtered the top 100 BNFinder results for each base Boolean network count, grouped by the number of variables (dimension). The following figures illustrate these distributions:
+\begin{figure}[!h] % 'p' places the figure on its own dedicated page
+    \centering
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{image.png}
+        \caption{5 variables}
+        \label{fig:var5}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{image2.png}
+        \caption{6 variables}
+        \label{fig:var6}
+    \end{subfigure}
+
+    \vspace{1cm} % Increased spacing for clarity between large images
+
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{image3.png}
+        \caption{7 variables}
+        \label{fig:var7}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{image4.png}
+        \caption{8 variables}
+        \label{fig:var8}
+    \end{subfigure}
+
+    \vspace{1cm}
+
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{image5.png}
+        \caption{9 variables}
+        \label{fig:var9}
+    \end{subfigure}
+    % If you want to add the 10th image here to fill the gap:
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{image10.png}
+        \caption{10 variables}
+        \label{fig:var10}
+    \end{subfigure}
+
+    \caption{Comprehensive distribution of parameter effects(length, size, freq, attractor ratio) on BNFinder performance (5--10 variables).}
+    \label{fig:performance_full_page}
+\end{figure}
 
 
 
-\subsection{BDE vs MDE}
-when evaluating results we didn't observe significant differences in performance between of BDE and MDL, however results from MDL were slightly better so we decided to stick with it. % note: no plot  
+\subsubsection{Optimal Dataset Configurations}
+To identify the dataset parameters that yielded peak performance, we analyzed the medians for both \textit{Parent F1-score} and \textit{Transition Accuracy}. The configurations that achieved the highest scores are summarized in Tables \ref{tab:best_f1_refined} and \ref{tab:best_acc_refined}.
 
-\subsection{Best dataset configurations}
-In order to retrieve dataset parameters that yielded the best results, we decided to compare the medians of \textit{Parent F1-score} and \textit{Transition Accuracy} 
-the results were as follows: 
-
-\begin{table}[ht]
+\begin{table}[hbtp]
 \centering
 \caption{Best Configurations by Median F1 Score}
-\label{tab:best_f1}
-\begin{tabular}{@{}lrlrrrrr@{}}
+\label{tab:best_f1_refined}
+\begin{tabular}{c l r r r r r}
 \toprule
-\textbf{ID} & \textbf{dim} & \textbf{mode} & \textbf{len} & \textbf{size} & \textbf{freq} & \textbf{attr\_ratio} & \textbf{F1} \\ \midrule
-444         & 5            & async         & 20           & 50            & 1             & 0.7                  & 0.7059      \\
-1218        & 5            & sync          & 20           & 50            & 1             & 0.8                  & 1.0000      \\
-1818        & 6            & async         & 10           & 100           & 1             & 0.1                  & 0.8824      \\
-3165        & 6            & sync          & 10           & 50            & 1             & 0.0                  & 1.0000      \\
-4009        & 7            & async         & 10           & 100           & 2             & 0.2                  & 0.8293      \\
-5143        & 7            & sync          & 10           & 50            & 1             & 0.6                  & 1.0000      \\
-7225        & 8            & async         & 100          & 100           & 1             & 0.0                  & 0.8261      \\
-8346        & 8            & sync          & 10           & 50            & 1             & 0.8                  & 1.0000      \\
-10057       & 9            & async         & 50           & 100           & 2             & 0.1                  & 0.7925      \\
-12522       & 9            & sync          & 10           & 100           & 1             & 0.4                  & 1.0000      \\
-14160       & 10           & async         & 100          & 100           & 5             & 0.9                  & 0.4000      \\
-14824       & 10           & sync          & 20           & 10            & 2             & 0.6                  & 0.4173      \\ \bottomrule
+\textbf{Dim} & \textbf{Mode} & \textbf{Len} & \textbf{Size} & \textbf{Freq} & \textbf{Attr Ratio} & \textbf{F1-Score} \\ \midrule
+\multirow{2}{*}{5}  & async & 20  & 50  & 1 & 0.7 & \textbf{0.7059} \\
+                    & sync  & 20  & 50  & 1 & 0.8 & \textbf{1.0000} \\ \addlinespace
+\multirow{2}{*}{6}  & async & 10  & 100 & 1 & 0.1 & \textbf{0.8824} \\
+                    & sync  & 10  & 50  & 1 & 0.0 & \textbf{1.0000} \\ \addlinespace
+\multirow{2}{*}{7}  & async & 10  & 100 & 2 & 0.2 & \textbf{0.8293} \\
+                    & sync  & 10  & 50  & 1 & 0.6 & \textbf{1.0000} \\ \addlinespace
+\multirow{2}{*}{8}  & async & 100 & 100 & 1 & 0.0 & \textbf{0.8261} \\
+                    & sync  & 10  & 50  & 1 & 0.8 & \textbf{1.0000} \\ \addlinespace
+\multirow{2}{*}{9}  & async & 50  & 100 & 2 & 0.1 & \textbf{0.7925} \\
+                    & sync  & 10  & 100 & 1 & 0.4 & \textbf{1.0000} \\ \addlinespace
+\multirow{2}{*}{10} & async & 100 & 100 & 5 & 0.9 & \textbf{0.4000} \\
+                    & sync  & 20  & 10  & 2 & 0.6 & \textbf{0.4173} \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[hbtp]
+\centering
+\caption{Best Configurations by Median Transition Accuracy}
+\label{tab:best_acc_refined}
+\begin{tabular}{c l r r r r r}
+\toprule
+\textbf{Dim} & \textbf{Mode} & \textbf{Len} & \textbf{Size} & \textbf{Freq} & \textbf{Attr Ratio} & \textbf{Trans. Acc.} \\ \midrule
+\multirow{2}{*}{5}  & async & 10  & 250 & 2 & 0.6 & \textbf{0.8625} \\
+                    & sync  & 100 & 100 & 1 & 1.0 & \textbf{1.0000} \\ \addlinespace
+\multirow{2}{*}{6}  & async & 10  & 250 & 2 & 0.3 & \textbf{0.8125} \\
+                    & sync  & 150 & 250 & 1 & 1.0 & \textbf{1.0000} \\ \addlinespace
+\multirow{2}{*}{7}  & async & 20  & 250 & 3 & 0.8 & \textbf{0.7991} \\
+                    & sync  & 50  & 50  & 1 & 0.9 & \textbf{1.0000} \\ \addlinespace
+\multirow{2}{*}{8}  & async & 10  & 100 & 3 & 0.2 & \textbf{0.8047} \\
+                    & sync  & 10  & 50  & 1 & 0.8 & \textbf{1.0000} \\ \addlinespace
+\multirow{2}{*}{9}  & async & 20  & 250 & 3 & 0.1 & \textbf{0.8056} \\
+                    & sync  & 10  & 100 & 1 & 0.4 & \textbf{1.0000} \\ \addlinespace
+\multirow{2}{*}{10} & async & 10  & 10  & 3 & 0.2 & \textbf{0.5813} \\
+                    & sync  & 10  & 10  & 7 & 0.9 & \textbf{0.5391} \\ \bottomrule
 \end{tabular}
 \end{table}
 
 %czego sie dowiedzielismy.
 %Tutaj musi się pojawić też coś, co usprawiedliwi to, że nie braliśmy scoringu BDE
-
-\section{conclusions.}
-\todo{Wszyscy}
-przede wszystkim nasza konkluzja co do guideline'u jakie parametry powinno sie stosowac w zaleznosci od specyfiki naszej sieci
+\newpage
+\section{Conclusions}
+\input{a04_conclusions/sub_conclusions}
 
 \begin{center}
     \huge \textbf{PART II: Biological Model Validation} 
@@ -101,11 +365,43 @@ co to za model, jaka jest jego specyfika, moze kilka slow co on biologicznie zna
 \input{b02_model_selection/sub_methodology}
 
 \section{results}
-\todo{Wszyscy}
+\todo{Maciej}
 jak dobrze poszla rekonstrukcja, czy zgodnie z przewidywaniami, czy podobnie jak wychodzilo w sieciach syntetycznych
 
 \section{conclusions / closing remarks}
 \todo{Marcin}
+TODO
 krotko, jak sobie poradzil pipeline w empirycznej sieci. moze krotko co oznaczalaby zrekonstruowana siec biologicznie np. wg zrekonstruowanej sieci jak dzialaby szlak bialkowy etc.
+
+\section*{Statement of contribution}
+
+\begin{itemize}
+    \item \textbf{Marcin Nowakowski:} 
+    \begin{itemize}
+        \item Initial experiments with smaller networks.
+        \item Synthetic networks generation.
+        \item Bio-divine networks import pipeline.
+        \item Bio-divine networks selection.
+        \item Application of Tarjan's algorithm for SCC analysis.
+    \end{itemize}
+
+    \item \textbf{Maciej Sanocki:} 
+    \begin{itemize}
+        \item Defined and implemented key evaluation metrics
+        \item Developed visualization pipelines
+        \item Performance Analysis including observing t
+    \end{itemize}
+
+    \item \textbf{Mateusz Wawrzyniak:} 
+    \begin{itemize}
+        \item Compilation and preprocessing of Boolean functions
+        \item Implementation of synchronous and asynchronous State Transition Systems.
+        \item Iterative Tarjan's algorithm for attractor identification.
+        \item Trajectory pooling method for attractor ratio control.
+        \item Trajectory generation pipeline.
+        \item Integration of BNFinder2 pipeline.
+        \item Sections 1, 2.2, 3.2 and 7 of the report.
+    \end{itemize}
+\end{itemize}
 
 \end{document}

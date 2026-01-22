@@ -1,0 +1,16 @@
+
+
+The benchmarking phase allowed us to establish guidelines and performance limits for Boolean network reconstruction using BNFinder2:
+\begin{itemize}
+    \item \textbf{Network complexity threshold} was found, as performance drop occurs at $n=10$ variables.
+    While dimensions 5-9 are reconstructed with satisfactory quality, networks of 10D and above show significant degradation in structural and functional accuracy regardless of parameter tuning.
+    \item \textbf{Scoring criteria} MDL and BDe perform similarly in most scenarios. 
+    However, MDL consistently yields marginally superior results and is recommended as the primary scoring metric.
+    \item \textbf{Dynamics mode:}
+    \begin{itemize}
+        \item \textbf{Synchronous:} Optimal reconstruction requires high attractor ratios ($at \approx 1.0$), utilising deterministic steady-state transitions.
+        \item \textbf{Asynchronous:} Better results are obtained with lower attractor ratios, as transient states provide the necessary events to infer individual node update rules.
+    \end{itemize}
+    
+    \item \textbf{Sampling strategy} diffe High-dimensional models benefit from increased sampling frequencies ($f > 1$), which prevents the algorithm from being overwhelmed by the high transition density in large state spaces.
+\end{itemize}
