@@ -1,7 +1,6 @@
 import os
 import sys
 import argparse
-import pandas as pd
 
 # Add parent directory to path to import boolean_networks
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
@@ -17,8 +16,14 @@ from analysis.utils import (
     extract_dependencies,
     calculate_metrics,
     evaluate_dynamics,
-    generate_ground_truth,
+    calculate_attractor_recovery,
+    build_learned_stg,
+    build_learned_async_stg,
+    get_attractor_groups,
 )
+from trajectory_generation import config
+from trajectory_generation import a01_compile_bool_nets as a01
+from trajectory_generation import a02_transition_nets as a02
 
 
 def main():
@@ -59,10 +64,29 @@ def main():
     seed = int(seed_str)
 
     print(f"Analyzing File: {filename}")
-    print(f"Inferred Config: Dims={num_vars}, Seed={seed}")
+    experiment_id = f"{num_vars}d_{seed:03d}"
+    print(f"Inferred Config: Experiment ID={experiment_id}")
 
-    print(f"Generating Ground Truth Network (Seed {seed})...")
-    transitions, functions, true_edges = generate_ground_truth(seed, num_vars)
+    # Check if experiment_id exists in config
+    if experiment_id not in config.BOOL_NETWORKS:
+        print(
+            f"Error: Experiment ID '{experiment_id}' not found in trajectory_generation/config.py"
+        )
+        sys.exit(1)
+
+    print(f"Loading Ground Truth Network from config for {experiment_id}...")
+
+    # Load and compile network from config
+    net_functions = config.BOOL_NETWORKS[experiment_id]
+    comp_net = a01._prepare_network(net_functions)
+
+    # Generate transitions (async)
+    transitions = a02.get_asynchronous_sts(comp_net)
+
+    # Reconstruct functions (truth tables) and edges for analysis
+    functions = reconstruct_functions_from_transitions(transitions, num_vars)
+    true_edges = extract_dependencies(functions, num_vars)
+
     print(f"Ground Truth Edges: {len(true_edges)} edges found.")
 
     with open(bif_path, "r") as f:
@@ -83,8 +107,6 @@ def main():
         key=lambda x: int(re.search(r"\d+", x).group()) if re.search(r"\d+", x) else x,
     )
 
-    from analysis.utils import truth_table_to_expression
-
     for var in variables:
         parents = parents_map.get(var, [])
         if not parents:
@@ -92,12 +114,11 @@ def main():
         else:
             func_str = reconstruct_boolean_function(cpts[var], parents)
 
-        # Determine index for ground truth function
-        # Assumes vars are x1..xn and functions keys are '0'..'(n-1)'
+        # Determine index for ground truth function logic
         var_idx = re.search(r"\d+", var)
         if var_idx:
-            idx = str(int(var_idx.group()) - 1)
-            true_func_str = truth_table_to_expression(functions.get(idx, {}), num_vars)
+            # Use the string directly from config
+            true_func_str = net_functions.get(var, "N/A")
         else:
             true_func_str = "N/A"
 
@@ -110,6 +131,33 @@ def main():
         print(f"{k}: {v:.4f}")
     for k, v in dynamics_metrics.items():
         print(f"{k}: {v:.4f}")
+
+    # Attractor Analysis
+    bif_file = os.path.basename(bif_path)
+    mode = "async"
+    if "_sync_" in bif_file:
+        mode = "sync"
+
+    print(f"Assessing Attractors (Mode: {mode})...")
+    if mode == "async":
+        # true_transitions (async) was already generated as 'transitions'
+        learned_transitions_stg = build_learned_async_stg(cpts, parents_map, num_vars)
+        true_transitions_stg = transitions  # reuse
+    else:
+        true_transitions_stg = a02.get_synchronous_sts(comp_net)
+        learned_transitions_stg = build_learned_stg(cpts, parents_map, num_vars)
+
+    true_groups = get_attractor_groups(true_transitions_stg)
+    learned_groups = get_attractor_groups(learned_transitions_stg)
+    attractor_metrics = calculate_attractor_recovery(true_groups, learned_groups)
+
+    print("Attractor Analysis:")
+    print(f"True Attractors Count:    {attractor_metrics['Attractors_True_Count']}")
+    print(f"Learned Attractors Count: {attractor_metrics['Attractors_Learned_Count']}")
+    print(f"Correctly Recovered:      {attractor_metrics['Attractors_Correct']}")
+    print(f"Attractor Precision:      {attractor_metrics['Attractors_Precision']:.4f}")
+    print(f"Attractor Recall:         {attractor_metrics['Attractors_Recall']:.4f}")
+    print(f"Attractor F1:             {attractor_metrics['Attractors_F1']:.4f}")
 
 
 if __name__ == "__main__":
