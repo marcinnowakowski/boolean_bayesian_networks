@@ -1,0 +1,102 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[colorinlistoftodos, prependcaption, textsize=tiny]{todonotes}
+
+\title{SAD project}
+\author{Mateusz Wawrzyniak}
+\date{January 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+    \huge \textbf{PART I: Benchmark on Synthetic Boolean Networks} 
+\end{center}
+
+\section{Introduction}
+
+\section{experimental setup}
+
+\subsection{network generation}
+\todo{Marcin}
+czym bylo zaimplementowane to generowanie, jakie mocne/slabe strony tego narzedzia.
+nie mowimy jeszcze o tym jakie zostaly wygenerowane, tylko o samej metodologii generowania
+
+\subsection{dataset generation}
+\todo{Mateusz}
+
+\subsubsection{parametrization}
+jakie parametry byly wybrany, jakie wybrane hard-limity na przestrzen parametrow, jakie mody etc.
+
+\subsubsection{preprocessing of the networks}
+kompilacja do state-networks, identyfikacja stanów nalezacych do atraktorow
+
+\subsubsection{creating the trajectories}
+optymalizacje produkowania trajektorii, pooling, multithreading
+
+\subsubsection{running bnfinder}
+jak to dzialalo, wybrany output i dlaczego
+
+\subsection{network reconstruction and evaluation}
+\todo{Maciej}
+
+\subsubsection{reconstructing the networks}
+w jaki sposob z outputu BNFa powstawala siec booelowska zrekonstuowana. dlaczego tak, wady i zalety
+
+\subsubsection{developed reconstruction quality metrics}
+wybrane metryki do ewaluacji, dlaczego, wady i zalety
+
+\section{First iteration}
+
+\subsection{generated networks - first iteration}
+\todo{Marcin}
+krotko, jakie sieci zostaly wybrane, ile ich bylo
+
+\subsection{datasets generated - first iteration}
+\todo{Mateusz}
+jaka przestrzen parametrow wybrana, dlaeczego taka, czemu 13d i wyzej nie podlegalo dalszej analizie
+
+\subsection{results - first iteration}
+\todo{Maciej}
+czego nauczylismy sie z pierwszej iteracji rekonstrukcji
+
+\section{Second iteration}
+
+\subsection{generated networks - second iteration}
+\todo{Marcin}
+krotko, jakie sieci zostaly wybrane, ile ich bylo. Co bylo, czego nie bylo w pierwszej iteracji i dlaczego
+
+\subsection{datasets generated - second iteration}
+\todo{Mateusz}
+jaka przestrzen parametrow wybrana. Co korygowala wzgledem pierwszej iteracji, co nam pozwalala
+
+\subsection{results - second iteration}
+\todo{Maciej}
+czego sie dowiedzielismy, co uscislilismy w porownaniu do pierwszej iteracji
+
+\section{conclusions.}
+\todo{Wszyscy}
+przede wszystkim nasza konkluzja co do guideline'u jakie parametry powinno sie stosowac w zaleznosci od specyfiki naszej sieci
+
+\begin{center}
+    \huge \textbf{PART II: Biological Model Validation} 
+\end{center}
+
+\section{introduction}
+\todo{Marcin}
+co to za model, jaka jest jego specyfika, moze kilka slow co on biologicznie znaczy i jaka jest jego wartosc
+
+\section{methodology}
+\todo{Marcin}
+jakie parametry trajektorii/rekonstrukcji wybrano i dlaczego takie, w odniesieniu do konkluzji czesci pierwszej
+
+\section{results}
+\todo{Wszyscy}
+jak dobrze poszla rekonstrukcja, czy zgodnie z przewidywaniami, czy podobnie jak wychodzilo w sieciach syntetycznych
+
+\section{conclusions / closing remarks}
+\todo{Marcin}
+krotko, jak sobie poradzil pipeline w empirycznej sieci. moze krotko co oznaczalaby zrekonstruowana siec biologicznie np. wg zrekonstruowanej sieci jak dzialaby szlak bialkowy etc.
+
+\end{document}
