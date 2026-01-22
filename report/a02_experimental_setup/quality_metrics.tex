@@ -1,0 +1,40 @@
+
+As described in the previous section, BNFinder returns two key pieces of information about the base Boolean network: the prediction of parent nodes for each variable and the probability distribution of predictor outputs for different values of parent nodes. When deciding on our key metrics, we tried to define them in such a way that they correspond directly to those two characteristics.
+\begin{enumerate}
+    \item \textbf{Evaluating Parent Node Prediction} 
+    In order to compare how well BNFinder managed to find parent nodes, we utilized a metric that accounts for both accuracy and the presence of false positives. When comparing different sets of parent nodes, not only do we need to judge whether BNFinder found all of the parent nodes, but also we need to take into account whether BNFinder suggested dependency on variables that weren’t in the set of parent nodes of the original network.
+
+F1-score is a commonly used metric for this kind of task. It is based on taking the harmonic average of Precision and Recall:
+
+\textbf{Precision}: The ratio of correctly predicted parent nodes to the total number of predicted parent nodes.
+
+\textbf{Recall}: The ratio of correctly predicted parent nodes to the total number of actual parent nodes in the original network.
+
+Our Parent F1-score is calculated as follows:
+
+\begin{equation*}
+    \textbf{F1} = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
+\end{equation*}
+
+By using the harmonic mean, we ensure that the score is only high if both Precision and Recall are high. 
+
+\item \textbf{Comparing State Transitions}
+For comparing the state transitions of the developed Boolean network, we need a metric that evaluates the logic of the network rather than just dependence on other variables. Even if the parent nodes are correctly identified, the underlying Boolean functions  must match the original predictors.
+
+To evaluate this, we use the Transition Accuracy, calculated as the Mean Marginal Probability of the correct next state for each variable. It measures how confidently and correctly the learned Bayesian Network predicts the next value of each node, averaged over the entire state space.
+Calculation Formula
+
+$$\textbf{Transition Accuracy} = \frac{1}{|S| \cdot N} \sum_{s \in S} \sum_{i=1}^{N} P_{\text{BN}}(X_i = t_{i,s} \mid s)$$
+
+Where:
+
+$S$: Set of all possible states ($2^N$ states).
+
+$N$: Number of variables in the network.
+
+$t_{i,s}$: The Ground Truth next value ($0$ or $1$) for variable $X_i$ given current state $s$.
+
+$P_{\text{BN}}$: The probability predicted by the learned Bayesian Network.
+
+
+\end{enumerate}

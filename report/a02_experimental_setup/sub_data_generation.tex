@@ -1,0 +1,112 @@
+\subsubsection{Parametrization}
+To evaluate the reconstruction capabilities of the BNFinder2 algorithm, a 4-dimensional hyperparameter space was defined to describe the characteristics of the generated trajectories. 
+The analysis focuses on two primary update modes, \textbf{synchronous}, characterized by the simultaneous update of all nodes, and \textbf{asynchronous}, where a single randomly selected node is updated per time step. 
+
+The following  hyperparameters were varied to generate the simulated datasets:
+\begin{itemize}
+    \item \textbf{Sampling frequency ($f$):} The step interval between recorded states.
+    \item \textbf{Dataset size ($s$):} The number of independent trajectories included in a single input file for BNFinder2.
+    \item \textbf{Trajectory length ($l$):} The number of steps recorded per trajectory.
+    \item \textbf{Attractor ratio ($at$):} The target proportion of states belonging to attractors versus transient states in each trajectory.
+\end{itemize}
+
+An initial sparse parameter search was performed to find more precise extent and boundaries of these parameters. 
+This initial phase explored the following ranges:
+\begin{itemize}
+    \item \textbf{Network dimensions ($n$):} 5, 7, 10, 13, 16.
+    \item \textbf{Sampling frequencies ($f$):} 1, 5, 10.
+    \item \textbf{Trajectory lengths ($l$):} 10, 50, 100, 500.
+    \item \textbf{Dataset sizes ($s$):} 1, 10, 100, 300.
+    \item \textbf{Attractor ratio ($at$):} $0.1 \times n \pm 0.05$ for $n = \{1, \dots, 10\}$.
+\end{itemize}
+
+Following this initial spares search, a visual analysis of the marginal distributions of the reproduction quality (QC) metrics was performed.
+By summing across marginal distributions e.g. aggregating results across all lengths and sizes for a specific frequency, we were able to make an educated guess regarding the actual parameter space required for sensible exploration.
+
+The observations from the sparse search led to the following methodological adjustments:
+\begin{enumerate}
+    \item \textbf{Dimensionality constraints:} 
+    It was observed that for any network with dimensionality $n \geq 10$, the reproduction quality metrics were significantly low.
+    Furthermore, there was no significant difference in performance for networks exceeding 10 dimensions.
+    The algorithm simply performed poorly regardless of the parameter tuning.
+    Consequently, we chose to focus on network dimensions $n \in [5, 6, 7, 8, 9, 10]$.
+    \item \textbf{Sampling frequency:} 
+    Non-trivial relationships were found between the sampling frequency and the quality metrics.
+    To capture these dynamics, the sampling space was expanded to: $f \in \{1, 2, 3, 5, 7, 10\}$.
+    \item \textbf{Resolution refinement for lengths and sizes:} 
+    Non-trivial QC metric values were obtained across the initial spans for trajectory lengths and dataset sizes.
+    To improve the resolution of the analysis, a log-like progression was introduced for these parameters:
+    \begin{itemize}
+        \item \textbf{Lengths ($l$):} $\{10, 20, 50, 100, 150, 200, 300, 400\}$.
+        \item \textbf{Sizes ($s$):} $\{1, 10, 20, 50, 100, 150, 250\}$.
+    \end{itemize}
+    \item \textbf{Attraction ratio control:} 
+    The attractor ratio is the only parameter that could not be directly controlled through initialization.
+    Instead, it was controlled through a brute-force pooling approach, as explained in the following subsection.
+    The span and resolution with increments of 0.1 from the initial generation were maintained for the final study.
+\end{enumerate}
+
+\subsubsection{Preprocessing of the networks}
+The preprocessing pipeline transformed raw Boolean functions provided in the network-generation module into a format more suited for computationally-dense simulation:
+\begin{enumerate}
+    \item \textbf{Compilation:} 
+    Logical transition functions provided as raw strings, were cleaned and their operators ($\sim, \&, |$) were mapped to Python logical operators .
+    These strings were then compiled and stored in a dictionary keyed by node names. 
+    This transformation was a necessity to easily and efficiently handle the Boolean network representations during simulation steps.
+
+    \item \textbf{State Transition System (STS) generation:}
+    A  graph of state transitions was constructed using the dictionary of compiled code objects. 
+    In synchronous mode, the system updates all nodes simultaneously resulting in each state pointing to exactly one successor. 
+    In asynchronous mode, the system updates only one node at a time. 
+    This explicit construction was done in order to generate the trajectories of the networks more efficiently.
+    Traversing a pre-computed state transition graph is computationally much faster than repeatedly inferring the next step from raw Boolean logic.
+    
+    \item \textbf{Attractor identification:} 
+    Tarjan's algorithm was employed to find Strongly Connected Components (SCC) within the STS.
+    This is a common and highly efficient O(N) algorithm used in graph theory to identify sets of nodes where every node is reachable from every other node in the same set.
+    Attractors were identified as terminal SCCs, which are components from which no external transitions to other states exist.
+    Identifying the attractors prior to trajectory generation was necessary to easily control the the ratio of the trajectory spent in attractor states versus transient states.
+\end{enumerate}
+
+\subsubsection{Generating the trajectories}
+
+A single trajectory was created by traversing either an asynchronous or synchronous state transition graph for a specified length.
+After the simulation, the trajectory was downsampled to the required sampling frequency. 
+At this point, we had a single trajectory with a specific mode, frequency, and length. 
+In theory, we could repeat this deterministic process as many times as needed to reach the target SIZE ($s$).
+
+The main problem was the attractor ratio, as it is a stochastic characteristic of a trajectory.
+We could not pre-specify this value before starting the simulation.
+Simply brute-forcing the generation until we obtained a specific range of attractor ratios could take a very long time.
+For example, producing 250 trajectories that all have a length of 400 in a 5D network while hoping to get an attractor ratio of $0.1 \pm 0.05$ for every single one is nearly impossible through simple trial and error.
+
+Because of this, a \textbf{pooling strategy} was implemented:
+\begin{itemize}
+    \item For every pair of sampling frequency ($f$) and trajectory length ($l$) a large \texttt{trajectory\_pool} of 10,000 trajectories is pre-simulated.
+    \item Each trajectory generated within the pool is classified by its actual, calculated attractor ratio.
+    \item The final datasets are created by sampling $s$ trajectories from the pool that satisfy the specific condition: $|actual\_ratio - target\_ratio| \leq \epsilon$.
+\end{itemize}
+
+To make the process faster, the trajectory generation was parallelized using the \texttt{multiprocessing} module.
+Tasks for generating the pools and selecting the final trajectories were distributed across all available CPU cores using \texttt{multiprocessing.Pool.map}. 
+This approach significantly reduced the processing time, which was especially important for high-dimensional networks where state spaces are much larger.
+
+\subsubsection{Running BNFinder}
+The reconstruction process was automated with a Python script that interfaced with the BNFinder2 tool within a dedicated Conda environment.
+
+
+\textbf{Isolation:} 
+The \texttt{subprocess} module was used to execute the \texttt{bnf} command with specific flags.
+We did it for the sake of completely isolating the Python 2 environment required by BNFinder2 from the Python 3 main script used for data generation.
+
+\textbf{Settings:} 
+In the initial trajectory generation, both MDL and BDe scoring criteria were used in BNFinder2.
+After the visual inspection of the QC metric distributions, we noticed that there were almost no cases in which BDe scoring produced better reconstructions than MDL scoring and so, for the final analysis, we used only MDL scoring.
+More support with the appropriate distributions will be shown later.
+A parent limit of 3 was used, as stated in the assignment.
+The \texttt{-g} flag was enabled to allow for self-loops. 
+This is a requirement for Dynamic Bayesian Networks (DBN), where the state of a node at $t+1$ may depend on its own state at $t$, particularly in asynchronous datasets where nodes may remain unchanged between steps.
+
+\textbf{Output:} 
+Results were saved in the BIF (Bayesian Interchange Format), a standardized structure for the evaluation against the original network topologies.
+We found this format to be the most informative as it encodes the Conditional Probability Tables (CPTs), defining the probability of each node's state based on the states of its parents. 

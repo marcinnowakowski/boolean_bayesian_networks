@@ -1,0 +1,40 @@
+In order to visualize how closely the learned Bayesian Network  resembles the original Boolean Network, we produced two types of comparison figures that represent both the structure and the dynamics of the system.
+
+\begin{enumerate}
+    \item \textbf{Comparison of Parent Graphs} 
+    This figure compares the directed graphs where an edge from $x_i$ to $x_j$ indicates that $x_i$ is a parent of $x_j$. To provide a clear evaluation, the results from BNFinder are plotted directly on top of the original network's architecture with highlighted true positives, false positives and false negatives.
+    
+    \begin{figure}[!hbtp]
+        \centering
+        \includegraphics[width=0.8\textwidth]{a02_experimental_setup/structure_async_best_Transition_Accuracy.png}
+        \caption{Example of a Parent Comparison graph}
+        \label{fig:hist_success}
+    \end{figure}
+
+    This visualization provides an intuitive look at the Parent F1-score described previously.
+
+    
+
+
+
+    \item \textbf{State Transition Graphs}
+    To compare the functional dynamics, we plot the State Transition Graphs for the original and reconstructed networks side-by-side.
+
+    Because the Bayesian Network provides a probability distribution for transitions, plotting a full weighted graph would be overly complex. For simplicity and ease of analysis, we visualize the most probable transitions. This allows us to see if the reconstructed network follows the same trajectories as the original system. Additionally, the attractors (stable states or cycles) are clearly marked in both graphs to show whether the long-term behavior of the system has been preserved.
+
+    \begin{figure}[!hbtp]
+        \centering
+        \includegraphics[width=0.8\textwidth]{a02_experimental_setup/stg_async_best_Transition_Accuracy_1.png}
+        \caption{Example of State Transition Graphs for small asynchronous network}
+        \label{fig:hist_success}
+    \end{figure}
+    
+    \begin{figure}[!hbtp]
+        \centering
+        \includegraphics[width=0.8\textwidth]{a02_experimental_setup/stg_async_best_Transition_Accuracy.png}
+        \caption{Example of State Transition Graphs for synchronous network}
+        \label{fig:hist_success}
+    \end{figure}
+
+\end{enumerate}
+

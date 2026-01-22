@@ -5,18 +5,24 @@ For the benchmark study, a total of 50 synthetic Boolean networks were generated
 \subsubsection{Network Dimensions}
 
 The generated networks cover the following dimensions:
-\begin{itemize}
-    \item \textbf{5D networks:} 5 networks with 32 states each
-    \item \textbf{6D networks:} 5 networks with 64 states each
-    \item \textbf{7D networks:} 5 networks with 128 states each
-    \item \textbf{8D networks:} 5 networks with 256 states each
-    \item \textbf{9D networks:} 5 networks with 512 states each
-    \item \textbf{10D networks:} 5 networks with 1,024 states each
-    \item \textbf{11D networks:} 5 networks with 2,048 states each
-    \item \textbf{12D networks:} 5 networks with 4,096 states each
-    \item \textbf{13D networks:} 5 networks with 8,192 states each
-    \item \textbf{16D networks:} 5 networks with 65,536 states each
-\end{itemize}
+\begin{table}[h!]
+    \centering
+    \label{tab:network_specs}
+    \begin{tabular}{ccc}
+        \hline
+        \textbf{Dimension} & \textbf{Number of Networks} & \textbf{States per Network ($2^n$)} \\ \hline
+        5D  & 5 & 32      \\
+        6D  & 5 & 64      \\
+        7D  & 5 & 128     \\
+        8D  & 5 & 256     \\
+        9D  & 5 & 512     \\
+        10D & 5 & 1,024   \\
+        11D & 5 & 2,048   \\
+        12D & 5 & 4,096   \\
+        13D & 5 & 8,192   \\
+        16D & 5 & 65,536  \\ \hline
+    \end{tabular}
+\end{table}
 
 \subsubsection{Network Properties}
 

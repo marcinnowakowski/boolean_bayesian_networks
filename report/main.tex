@@ -1,0 +1,111 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[colorinlistoftodos, prependcaption, textsize=tiny]{todonotes}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\usepackage{float}
+
+\title{SAD project}
+\author{}
+\date{January 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+    \huge \textbf{Part I: BNFinder2 benchmark using synthetic Boolean Networks} 
+\end{center}
+
+\section{Introduction}
+
+\section{experimental setup}
+
+\subsection{Network Generation}
+\input{a02_experimental_setup/sub_network_generation}
+
+\subsection{Dataset Generation}
+\input{a02_experimental_setup/sub_data_generation}
+
+\subsection{Network reconstruction and evaluation}
+
+\subsubsection{Reconstruction quality metrics}
+\input{a02_experimental_setup/quality_metrics}
+
+\subsubsection{Visualization of network reconstruction quality}
+\input{a02_experimental_setup/visualization}
+
+
+
+\section{Results}
+
+\subsection{Generated Networks}
+\input{a03_results/sub_generated_networks}
+
+\subsection{Generated datasets}
+\input{a03_results/sub_datasets_generated}
+
+\subsection{Reconstruction results}
+\todo{Maciej}
+
+
+
+\subsection{BDE vs MDE}
+when evaluating results we didn't observe significant differences in performance between of BDE and MDL, however results from MDL were slightly better so we decided to stick with it. % note: no plot  
+
+\subsection{Best dataset configurations}
+In order to retrieve dataset parameters that yielded the best results, we decided to compare the medians of \textit{Parent F1-score} and \textit{Transition Accuracy} 
+the results were as follows: 
+
+\begin{table}[ht]
+\centering
+\caption{Best Configurations by Median F1 Score}
+\label{tab:best_f1}
+\begin{tabular}{@{}lrlrrrrr@{}}
+\toprule
+\textbf{ID} & \textbf{dim} & \textbf{mode} & \textbf{len} & \textbf{size} & \textbf{freq} & \textbf{attr\_ratio} & \textbf{F1} \\ \midrule
+444         & 5            & async         & 20           & 50            & 1             & 0.7                  & 0.7059      \\
+1218        & 5            & sync          & 20           & 50            & 1             & 0.8                  & 1.0000      \\
+1818        & 6            & async         & 10           & 100           & 1             & 0.1                  & 0.8824      \\
+3165        & 6            & sync          & 10           & 50            & 1             & 0.0                  & 1.0000      \\
+4009        & 7            & async         & 10           & 100           & 2             & 0.2                  & 0.8293      \\
+5143        & 7            & sync          & 10           & 50            & 1             & 0.6                  & 1.0000      \\
+7225        & 8            & async         & 100          & 100           & 1             & 0.0                  & 0.8261      \\
+8346        & 8            & sync          & 10           & 50            & 1             & 0.8                  & 1.0000      \\
+10057       & 9            & async         & 50           & 100           & 2             & 0.1                  & 0.7925      \\
+12522       & 9            & sync          & 10           & 100           & 1             & 0.4                  & 1.0000      \\
+14160       & 10           & async         & 100          & 100           & 5             & 0.9                  & 0.4000      \\
+14824       & 10           & sync          & 20           & 10            & 2             & 0.6                  & 0.4173      \\ \bottomrule
+\end{tabular}
+\end{table}
+
+%czego sie dowiedzielismy.
+%Tutaj musi się pojawić też coś, co usprawiedliwi to, że nie braliśmy scoringu BDE
+
+\section{conclusions.}
+\todo{Wszyscy}
+przede wszystkim nasza konkluzja co do guideline'u jakie parametry powinno sie stosowac w zaleznosci od specyfiki naszej sieci
+
+\begin{center}
+    \huge \textbf{PART II: Biological Model Validation} 
+\end{center}
+
+\section{introduction}
+\todo{Marcin}
+co to za model, jaka jest jego specyfika, moze kilka slow co on biologicznie znaczy i jaka jest jego wartosc
+
+\section{Model Selection}
+\input{b02_model_selection/sub_model_selection}
+
+\section{Chosen parameters}
+\input{b02_model_selection/sub_methodology}
+
+\section{results}
+\todo{Wszyscy}
+jak dobrze poszla rekonstrukcja, czy zgodnie z przewidywaniami, czy podobnie jak wychodzilo w sieciach syntetycznych
+
+\section{conclusions / closing remarks}
+\todo{Marcin}
+krotko, jak sobie poradzil pipeline w empirycznej sieci. moze krotko co oznaczalaby zrekonstruowana siec biologicznie np. wg zrekonstruowanej sieci jak dzialaby szlak bialkowy etc.
+
+\end{document}

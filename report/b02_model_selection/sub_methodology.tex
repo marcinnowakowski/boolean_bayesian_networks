@@ -1,0 +1,61 @@
+
+
+The selection of trajectory generation parameters for the biological validation phase were chosen based on theresults obtained in Part I.
+The benchmark we created revealed that reconstruction quality (QC) is highly sensitive to the interaction between network dimensionality and the characteristics of the trajectory datasets.
+Consequently, the parameters for each biological model were tuned to the configurations that resulted the highest QC scores and lowest reconstruction errors for their respective dimensions.
+
+For all biological models, the tolerance for the attractor ratio was kept at $\epsilon = 0.05$ and the pool size was set to $10,000$ trajectories to ensure obtaining the target attractor ratio in large enough population of trajectories
+
+\subsection{5D model parameters (bn\_109\_5d)}
+
+The synchronous mode uses a high trajectory length, while the asynchronous mode focuses on a high dataset size.
+
+\begin{table}[hbtp]
+\centering
+\begin{tabular}{lcccccc}
+\hline
+\textbf{Mode} & \textbf{Freq ($f$)} & \textbf{Size ($s$)} & \textbf{Length ($l$)} & \textbf{Attr Ratio ($at$)} \\ \hline
+Asynchronous  & 2 & 250 & 10  & 0.6 \\
+Synchronous   & 1 & 100 & 100 & 1.0 \\ \hline
+\end{tabular}
+\caption{Simulation parameters for the 5D biological model.}
+\end{table}
+
+\subsection{7D model parameters (bn\_158\_7d)}
+
+Similarily to 5D model, asynchronous mode utilizes large dataset of quite short trajectories, at downsapled frequency, while synchronous mode relies on balances size and length of the dataset with no downsampling.
+
+\begin{table}[hbtp]
+\centering
+\begin{tabular}{lcccccc}
+\hline
+\textbf{Mode} & \textbf{Freq ($f$)} & \textbf{Size ($s$)} & \textbf{Length ($l$)} & \textbf{Attr Ratio ($at$)} \\ \hline
+Asynchronous  & 3 & 250 & 20 & 0.8 \\
+Synchronous   & 1 & 50  & 50 & 0.9 \\ \hline
+\end{tabular}
+\caption{Simulation parameters for the 7D biological model.}
+\end{table}
+
+\subsection{10D model parameters (bn\_063\_10d\_011)}
+
+As 10D networks represented the "borderline-high" complexity threshold in Part I, the dataset size and trajectory lengths were reduced to $10$ to maintain computational feasibility while focusing on high-quality snapshots. In the synchronous mode, a significantly higher sampling frequency ($f=7$) was selected based on Part I results indicating that widely spaced samples help BNFinder2 distinguish between direct causal links and intermediate correlations in larger state spaces.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lcccccc}
+\hline
+\textbf{Mode} & \textbf{Freq ($f$)} & \textbf{Size ($s$)} & \textbf{Length ($l$)} & \textbf{Attr Ratio ($at$)} \\ \hline
+Asynchronous  & 3 & 10 & 10 & 0.2 \\
+Synchronous   & 7 & 10 & 10 & 0.9 \\ \hline
+\end{tabular}
+\caption{Simulation parameters for the 10D biological model.}
+\end{table}
+
+\subsection{Parameter Rationale}
+
+The divergence in \texttt{ATTR\_RATIO} between models (e.g., $0.2$ for 10D Async vs. $1.0$ for 5D Sync) is a result of the optimal configurations identified in the first iteration of the project. Part I results clearly demonstrated that:
+\begin{itemize}
+    \item \textbf{Synchronous modes} perform best with very high attractor ratios, as the deterministic transitions provide clear evidence of the underlying logic when the system reaches steady states.
+    \item \textbf{Asynchronous modes} often require lower attractor ratios (more transient states) to provide the algorithm with enough "state-change" events to correctly infer the individual node update rules.
+    \item \textbf{High-dimensional models (10D)} exhibit better reconstruction when sampling frequency is increased, preventing the algorithm from being overwhelmed by the high density of transitions in the state transition system.
+\end{itemize}

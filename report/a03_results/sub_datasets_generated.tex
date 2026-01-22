@@ -1,0 +1,33 @@
+The primary goal of the data generation phase was to populate the hyperparameter space defined in the previous sections. 
+Due to the constraints imposed by the attractor ratio stochastic nature, not every combination of parameters resulted in a successful file generation. 
+In total, the generation process yielded \textbf{39,880} successful trajectory files across all considered networks. 
+
+The distribution of successfully generated datasets per network dimension is provided in Table \ref{tab:dimension_counts}.
+
+\begin{table}[hbtp]
+\centering
+\begin{tabular}{lc}
+\hline
+\textbf{Dimension} & \textbf{Successful Files} \\ \hline
+5d  & 6,549 \\
+6d  & 4,291 \\
+7d  & 7,763 \\
+8d  & 7,511 \\
+9d  & 8,825 \\
+10d & 4,941 \\ \hline
+\textbf{Total} & \textbf{39,880} \\ \hline
+\end{tabular}
+\caption{Count of successfully generated datasets for different dimensionality.}
+\label{tab:dimension_counts}
+\end{table}
+
+The overall success rate relative to the target attractor ratio is visualized in Figure \ref{fig:hist_success}. 
+As can be seen, for most generated files, the trajectories were almost always in the attractor states.
+This fact rises primarily because for large trajectories, it is very likely to fall into the attractor basin early and remain there for the rest of the generated trajectory.
+
+\begin{figure}[hbtp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{a03_results/histogram_success_ratio.png}
+    \caption{Distribution of successfully generated files in the range of target attractor ratios.}
+    \label{fig:hist_success}
+\end{figure}
