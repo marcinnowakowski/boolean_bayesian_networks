@@ -58,6 +58,27 @@ The three selected models were chosen to:
 
 Table~\ref{tab:biodivine_structure} summarizes the structural properties of the three selected biological networks. Table~\ref{tab:biodivine_scc_sizes} shows the attractor and transient SCC size distributions for each model.
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{b02_model_selection/bn_109_5d_scc_simplified.png}
+    \caption{SCC graph of the Caulobacter cell cycle network (5D). The single fixed-point attractor is shown in green, with 7 transient SCCs forming the basin of attraction. The largest transient SCC contains 25 states.}
+    \label{fig:scc_5d}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{b02_model_selection/bn_158_7d_scc_simplified.png}
+    \caption{Simplified SCC graph of the phage lambda decision network (7D). Two attractors are visible: a fixed point and a 2-state cycle representing the bistable lysis-lysogeny switch. The 79 transient SCCs reflect the complex decision-making landscape.}
+    \label{fig:scc_7d}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{b02_model_selection/bn_063_10d_011_scc_simplified.png}
+    \caption{Simplified SCC graph of the embryonic development network (10D). Despite having 704 transient SCCs, the network converges to a single fixed-point attractor. The two largest transient SCCs contain 221 and 100 states respectively.}
+    \label{fig:scc_10d}
+\end{figure}
+
 \begin{table}[h!]
     \centering
     \caption{Structural properties of selected biological networks}
@@ -85,3 +106,7 @@ Table~\ref{tab:biodivine_structure} summarizes the structural properties of the 
 \end{table}
 
 All three networks exhibit fixed-point attractors, with the phage lambda model additionally containing a 2-state cyclic attractor representing the bistable lysis-lysogeny switch. The 10D embryonic development network has a notably large number of transient SCCs (704), reflecting the complex developmental trajectory landscape.
+
+\subsection{SCC Graph Visualizations}
+
+To better understand the structure of the selected networks, we generated condensation graphs showing the relationships between strongly connected components. In these visualizations, green nodes represent attractors (terminal SCCs), blue nodes represent transient SCCs, and node labels indicate the number of states in each SCC.
