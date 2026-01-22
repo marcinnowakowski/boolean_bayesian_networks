@@ -35,7 +35,7 @@ def run_bnfinder_analysis(input_path, output_dir, conda_env="bnf_env"):
     base_name = os.path.splitext(os.path.basename(input_path))[0]
 
     # Zadanie wymaga przetestowania MDL i BDe
-    scoring_criteria = ["MDL", "BDE"]
+    scoring_criteria = ["MDL"]#, "BDE"]
 
     for score in scoring_criteria:
         # Formatka nazwy: {base_name}_scr{score}.bif

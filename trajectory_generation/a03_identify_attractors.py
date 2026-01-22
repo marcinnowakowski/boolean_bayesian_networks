@@ -1,3 +1,6 @@
+import sys
+sys.setrecursionlimit(100000) # Zwiększamy do 100k
+
 def find_attractors(transitions):
     """
     Identyfikuje atraktory (terminalne SCC) w sieci przejść.
