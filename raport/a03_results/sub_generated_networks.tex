@@ -1,0 +1,37 @@
+% Generated Networks
+
+For the benchmark study, a total of 50 synthetic Boolean networks were generated using the custom generator described in Section 2.1. The networks span 10 different dimensions, with 5 networks generated for each dimension.
+
+\subsubsection{Network Dimensions}
+
+The generated networks cover the following dimensions:
+\begin{itemize}
+    \item \textbf{5D networks:} 5 networks with 32 states each
+    \item \textbf{6D networks:} 5 networks with 64 states each
+    \item \textbf{7D networks:} 5 networks with 128 states each
+    \item \textbf{8D networks:} 5 networks with 256 states each
+    \item \textbf{9D networks:} 5 networks with 512 states each
+    \item \textbf{10D networks:} 5 networks with 1,024 states each
+    \item \textbf{11D networks:} 5 networks with 2,048 states each
+    \item \textbf{12D networks:} 5 networks with 4,096 states each
+    \item \textbf{13D networks:} 5 networks with 8,192 states each
+    \item \textbf{16D networks:} 5 networks with 65,536 states each
+\end{itemize}
+
+\subsubsection{Network Properties}
+
+All networks share the following characteristics:
+\begin{itemize}
+    \item \textbf{Fixed dependency limit:} Each variable's update function depends on exactly 3 other variables.
+    \item \textbf{Reproducibility:} Each network was generated with a unique random seed, ensuring exact reproducibility.
+    \item \textbf{Boolean functions:} Update functions are represented in Sum-of-Products (SOP) form with 2--6 true outputs per function.
+\end{itemize}
+
+\subsubsection{Rationale for Dimension Selection}
+
+The dimension range from 5 to 16 was chosen to:
+\begin{enumerate}
+    \item \textbf{Span tractable to challenging cases:} Lower-dimensional networks (5--7D) provide scenarios where reconstruction should be feasible, while higher-dimensional networks (13--16D) test the limits of the reconstruction algorithm.
+    \item \textbf{Enable scaling analysis:} The exponential growth of state space ($2^n$) across dimensions allows for systematic evaluation of how reconstruction quality degrades with increasing network complexity.
+    \item \textbf{Match biological relevance:} Many real biological signaling pathways involve 5--15 key regulatory components, making this range practically relevant.
+\end{enumerate}
