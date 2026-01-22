@@ -1,0 +1,54 @@
+% Network Generation Methodology
+
+For generating synthetic Boolean networks, we developed a custom Python-based generator with a fixed dependency limit. The generator accepts the network dimension $n$ (number of variables) as an input parameter and produces networks where each variable's update function depends on exactly 3 other variables.
+
+\subsubsection{Generation Algorithm}
+
+The generation process consists of two main phases:
+
+\paragraph{Phase 1: Function Definition}
+For each variable $x_i$ in the network:
+\begin{enumerate}
+    \item \textbf{Dependency Selection:} A set of exactly 3 dependency variables is randomly selected from all network variables (potentially including $x_i$ itself).
+    \item \textbf{Truth Table Construction:} A Boolean function $f_i$ is defined over the 3 dependency variables. The function is represented as a truth table with $2^3 = 8$ entries. To ensure non-trivial dynamics, the number of ``true'' outputs is constrained between 2 and 6 out of 8 possible input combinations.
+\end{enumerate}
+
+\paragraph{Phase 2: Transition Computation}
+The asynchronous state transitions are derived directly from the update functions. For each state $s$, a transition to state $s'$ (differing only in bit $i$) is possible if and only if $f_i(s) \neq s_i$. States with no possible transitions become fixed points (self-loops).
+
+\subsubsection{Output Format}
+
+The generator produces:
+\begin{itemize}
+    \item \textbf{Boolean expressions:} Each update function is converted to Sum-of-Products (SOP) form, facilitating subsequent analysis and reconstruction evaluation.
+    \item \textbf{Transition graph:} A complete mapping from each state to its possible successor states under asynchronous update semantics.
+\end{itemize}
+
+\subsubsection{Network Analysis}
+
+The generator includes a built-in \texttt{analyze\_network} function that computes structural properties of the generated transition graph:
+\begin{itemize}
+    \item \textbf{State space metrics:} Total number of states ($2^n$) and transitions in the graph.
+    \item \textbf{Parentless states:} States with no incoming transitions (initial states reachable only from themselves).
+    \item \textbf{Fixed points:} States that are self-loops, i.e., where no variable can change.
+    \item \textbf{Strongly Connected Components (SCCs):} Identified using Tarjan's algorithm to find maximal sets of mutually reachable states.
+    \item \textbf{Attractors:} Terminal SCCs from which no external transitions exist, representing the long-term behavior of the network.
+\end{itemize}
+
+\subsubsection{Strengths}
+
+\begin{itemize}
+    \item \textbf{Controlled complexity:} The hard limit on input dependencies (at most 3) ensures that networks remain tractable for Bayesian network reconstruction, which might struggle with high-arity functions.
+    \item \textbf{Reproducibility:} Configurable random seed enables exact reproduction of generated networks.
+    \item \textbf{Flexible parameterization:} Network dimension $n$ and function complexity can be adjusted via configuration parameters.
+    \item \textbf{Built-in analysis:} The \texttt{analyze\_network} function provides comprehensive structural insights without requiring external tools.
+\end{itemize}
+
+\subsubsection{Limitations}
+
+\begin{itemize}
+    \item \textbf{Uniform dependency count:} All variables have at most 3 dependencies; real biological networks may exhibit more heterogeneous connectivity patterns.
+    \item \textbf{Random structure:} The generator does not impose specific topological constraints (e.g., scale-free or small-world properties) that are common in biological networks.
+    \item \textbf{No biological priors:} Functions are purely random within the specified constraints, without incorporating biologically motivated motifs or regulatory patterns.
+    \item \textbf{Asynchronous semantics only:} While the generator natively produces asynchronous transitions, synchronous dynamics must be derived separately.
+\end{itemize}
