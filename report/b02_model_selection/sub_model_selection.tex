@@ -53,3 +53,35 @@ The three selected models were chosen to:
     \item \textbf{Include biological diversity:} The models represent different biological contexts (bacterial cell cycle, phage decision, embryonic development).
     \item \textbf{Minimize external dependencies:} Priority was given to models with few or no external inputs to ensure self-contained network dynamics.
 \end{itemize}
+
+\subsection{Structural Properties of Selected Models}
+
+Table~\ref{tab:biodivine_structure} summarizes the structural properties of the three selected biological networks. Table~\ref{tab:biodivine_scc_sizes} shows the attractor and transient SCC size distributions for each model.
+
+\begin{table}[h!]
+    \centering
+    \caption{Structural properties of selected biological networks}
+    \label{tab:biodivine_structure}
+    \begin{tabular}{clccccc}
+        \hline
+        \textbf{Dim} & \textbf{Parentless} & \textbf{Fixed Pts} & \textbf{Attractors} & \textbf{Trans. SCCs} & \textbf{SCC Edges} \\ \hline
+        5D   & 1 & 1 & 1 & 7   & 13   \\
+        7D     & 1 & 1 & 2 & 79  & 294  \\
+        10D     & 1 & 1 & 1 & 704 & 3723 \\ \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{Attractor and transient SCC sizes for biological networks}
+    \label{tab:biodivine_scc_sizes}
+    \begin{tabular}{clll}
+        \hline
+        \textbf{Dim} & \textbf{Description} & \textbf{Attractor Sizes} & \textbf{Transient SCC Sizes (top 5)} \\ \hline
+        5  & Caulobacter cell cycle   & [1]      & [25, 1, 1, 1, 1]      \\
+        7  & Phage lambda decision    & [2, 1]   & [31, 11, 4, 2, 2]     \\
+        10 & Embryonic development    & [1]      & [221, 100, 1, 1, 1]   \\ \hline
+    \end{tabular}
+\end{table}
+
+All three networks exhibit fixed-point attractors, with the phage lambda model additionally containing a 2-state cyclic attractor representing the bistable lysis-lysogeny switch. The 10D embryonic development network has a notably large number of transient SCCs (704), reflecting the complex developmental trajectory landscape.
