@@ -32,7 +32,7 @@ def main():
 
     root_dir = os.path.dirname(os.path.dirname(__file__))
     results_dir = os.path.join(
-        root_dir, f"trajectory_generation/results_20_01/{experiment_id}"
+        root_dir, f"trajectory_generation/results_21_01_002/{experiment_id}"
     )
     plots_dir = os.path.join(root_dir, f"analysis/plots/{experiment_id}")
     csv_path = os.path.join(

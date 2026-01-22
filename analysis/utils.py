@@ -93,32 +93,56 @@ def calculate_metrics(
 
 def evaluate_dynamics(
     true_functions: Dict[str, Dict[str, int]],
-    parsed_cpts: Dict,
-    parsed_parents: Dict,
+    parsed_cpts: Dict[str, Dict[str, float]],
+    parsed_parents: Dict[str, List[str]],
     num_vars: int,
 ) -> Dict[str, float]:
     all_states = list(true_functions["0"].keys())
 
-    total_states = 0
-    correct_states = 0
+    total_prob_score = 0
+    total_checks = 0
 
     for state in all_states:
-        true_next_list = []
         for i in range(num_vars):
-            true_next_list.append(str(true_functions[str(i)][state]))
-        true_next_state = "".join(true_next_list)
+            var_name = f"x{i + 1}"
 
-        learned_next_state = predict_next_state_learned(
-            state, parsed_cpts, parsed_parents, num_vars
-        )
+            # 1. Get True Next Value
+            true_val = true_functions[str(i)][state]
 
-        if true_next_state == learned_next_state:
-            correct_states += 1
+            # 2. Get Predicted Probability of being 1
+            prob_1 = 0.5  # Default if unknown
 
-        total_states += 1
+            # Reconstruct signature for this variable given the state
+            parents = parsed_parents.get(var_name, [])
+            if not parents:
+                # No parents? Check if there's a default or single entry for empty parents
+                # But usually "" key handles this in our parser
+                if "" in parsed_cpts.get(var_name, {}):
+                    prob_1 = parsed_cpts[var_name][""]
+            else:
+                parent_vals_list = []
+                for p in parents:
+                    p_idx = int(p.replace("x", "")) - 1
+                    parent_vals_list.append(state[p_idx])
+                sig = "".join(parent_vals_list)
+
+                if sig in parsed_cpts.get(var_name, {}):
+                    prob_1 = parsed_cpts[var_name][sig]
+
+            # 3. Calculate Score
+            # If true_val is 1, we want prob_1 to be high. Score = prob_1
+            # If true_val is 0, we want prob_0 to be high. Score = 1 - prob_1
+            if true_val == 1:
+                total_prob_score += prob_1
+            else:
+                total_prob_score += 1.0 - prob_1
+
+            total_checks += 1
 
     return {
-        "Transition_Accuracy": correct_states / total_states if total_states > 0 else 0,
+        "Transition_Accuracy": total_prob_score / total_checks
+        if total_checks > 0
+        else 0,
     }
 
 
